@@ -1,0 +1,34 @@
+plugins {
+    id 'java'        
+    id 'application' 
+}
+
+dependencies {
+    compile project(':core')   
+}
+	
+mainClassName = 'com.workflowfm.composer.server.ComposerServer'
+applicationName = 'WorkflowFM_Server'
+
+jar {
+    manifest {
+        attributes("Application-Name": "WorkflowFM Server")
+    }
+}
+
+applicationDistribution.from("../") {
+    include 'LICENSE'
+    include 'NOTICE'
+    into '.'
+}
+
+applicationDistribution.from(".") {
+    include 'Dockerfile'
+    include 'docker.properties'
+    into '.'
+}
+
+applicationDistribution.from("scripts") {
+    include '*'
+    into 'scripts'
+}

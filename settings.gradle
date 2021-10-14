@@ -1,0 +1,2 @@
+rootProject.name = 'WorkflowFM_Composer_Root'
+include "core", "client", "server"

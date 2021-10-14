@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+}
+	
+subprojects {	
+	group = 'com.workflowfm'
+	version = '0.7'
+
+	sourceCompatibility = '1.8'
+	targetCompatibility = '1.8'
+	
+    plugins.withType(JavaPlugin) {
+        repositories {
+            mavenCentral()
+        }
+
+	    dependencies {
+          compile 'org.apache.commons:commons-lang3:3.8'
+          compile 'org.apache.commons:commons-configuration2:2.7'
+          compile 'commons-beanutils:commons-beanutils:1.9.4'
+	        compile 'com.google.code.gson:gson:2.8.5'
+     	    testCompile "junit:junit:4.12"
+        }
+	}
+}
+
+

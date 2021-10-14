@@ -1,0 +1,374 @@
+/*
+ * Pi Parser
+ *
+ */
+
+options{
+	LOOKAHEAD = 3;
+	MULTI = true;
+	STATIC = false;
+}
+
+PARSER_BEGIN(PiParser)
+package executionEngine;
+import java.io.InputStream;
+import exceptions.PiParserError;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.io.Reader;
+
+/**
+* PiParser uses an input stream and constructs an Abstract syntax tree from the definitions in
+* this stream.
+* @author Anja
+*/
+public class PiParser {
+
+	/**
+	* For checking if an agent is defined twice.
+	*/
+	private static HashSet agentNames;
+	/**
+	* Store information about the defined pools. The user does not have to define any pools.
+	* They are just used for additional information during visualization.
+	* pools looks like the following: <key: agentName><value:poolName>
+	*/
+	private static Hashtable pools;
+	/**
+	* For checking if a pool is defined twice.
+	*/
+	private static HashSet poolNames;
+	
+	private static String currentAgent;
+	
+	/**
+	* Parse input stream and construct an Abstract Syntax Tree.
+	* @return Returns the root node of the constructed tree.
+	*/
+	public static SimpleNode parseFile(InputStream stream) throws PiParserError, Exception {
+		PiParser t = new PiParser(stream);
+		if (agentNames == null) agentNames = new HashSet();
+		else agentNames.clear();
+		if (pools == null) pools = new Hashtable();
+		else pools.clear();
+		if (poolNames == null) poolNames = new HashSet();
+		else poolNames.clear();
+		currentAgent = "";
+		SimpleNode n = null;
+		//try {
+	      n = t.Root();
+	    /*} catch (Exception e) {
+	      System.out.println("Oops.");
+	      System.out.println(e.getMessage());
+	      e.printStackTrace();
+    	}*/
+    	return n;
+	}
+	
+	/**
+	* Parse additional agent. Return root node with the new agent as children.
+	*/
+	public static SimpleNode parseAdditionalAgents(Reader stream, HashSet _agentNames, Hashtable _pools, HashSet _poolNames) throws PiParserError, Exception {
+		PiParser t = new PiParser(stream);
+		agentNames = _agentNames;
+		pools = _pools;
+		poolNames = _poolNames;
+		currentAgent = "";
+		SimpleNode n = null;
+		//try {
+	      n = t.Root();
+	    /*} catch (Exception e) {
+	      System.out.println("Oops.");
+	      System.out.println(e.getMessage());
+	      e.printStackTrace();
+    	}*/
+    	return n;
+	}
+	
+	public static Hashtable getPoolTable(){
+		return pools;
+	}
+	
+	public static HashSet getPoolNames(){
+		return poolNames;
+	}
+	
+	public static HashSet getAgentNames(){
+		return agentNames;
+	}
+}
+PARSER_END(PiParser)
+
+
+SKIP :
+{
+  " "
+| "\t"
+| "\n"
+| "\r"
+| <"//" (~["\n","\r"])* ("\n"|"\r"|"\r\n")>
+| <"/*" (~["*"])* "*" (~["/"] (~["*"])* "*")* "/">
+}
+
+TOKEN : { <INACTION: "0">}
+TOKEN : { <AGENT_ID: (["A"-"Z"])+ ("_" | ["0"-"9"] | ["a"-"z"]|["A"-"Z"])*  >}
+TOKEN : { <AGENT_TOK: "agent">}
+TOKEN : { <TAU : "t" >}
+TOKEN : { <EXEC : "exec">}
+TOKEN : { <POOL_TOK: "pool">}
+TOKEN : { <CHAN_ID:  ("_" | ["0"-"9"] | ["a"-"z"]) ("_" | ["0"-"9"] | ["a"-"z"]|["A"-"Z"])*>}
+
+
+
+
+/**
+* Create the root node.
+*/
+SimpleNode Root() : {}{
+  Expression() <EOF>
+  { return jjtThis; }
+}
+
+/**
+* No node is created for this rule but it takes care that at least one agent is defined.
+*/
+void Expression() #void: {}{
+	(PoolDefinition())*
+	(AgentDefinition())+ 
+}
+/**
+* Get the definitions of the pools and store them in the pool table.
+*
+*/
+void PoolDefinition() #void:{Token agentName, poolName;}{
+	<POOL_TOK>
+	poolName = <AGENT_ID>
+	{	// Check if the pool is defined twice
+		if (poolNames.contains(poolName.image))
+			throw new PiParserError("Encountered duplicate pool definition: "+ poolName.image);
+	}
+	
+	"{" 
+		agentName = <AGENT_ID> 
+		{	// Check if the agent already belongs to another pool
+			if ( pools.containsKey(agentName.image))
+				throw new PiParserError("Agent "+ agentName.image + " already belongs to another pool.");
+			pools.put(agentName.image, poolName.image);
+		}
+		("," agentName = <AGENT_ID>
+			{	// Check if the agent already belongs to another pool
+				if ( pools.containsKey(agentName.image))
+					throw new PiParserError("Agent "+ agentName.image + " already belongs to another pool.");
+				pools.put(agentName.image, poolName.image);
+			}			
+		)*		
+	"}"
+}
+
+/**
+* Create an agentDefinition node and set its attributes, which are the name of the agent (agentName),
+* the parameters and if this agent is going to be executed right away  (setExecuteAgent).
+*
+* The definition of an agent has the following syntax:
+* "exec"? "agent" <AgentName> "(" parameters ") = " <ProcessDefintion> 
+*/
+void AgentDefinition() : {Token name;}{
+	(<EXEC> {	jjtThis.setExecuteAgent(true);	})? 
+	<AGENT_TOK> 
+	name = <AGENT_ID> 
+	{	
+		currentAgent = name.image;
+		// check if this agent already exists
+		if (agentNames.contains(name.image)){
+			throw new PiParserError("Encountered duplicate definition of agent: " + name.image);
+		}
+		else agentNames.add(name.image);
+	
+		jjtThis.setAgentName(name.image);	
+	}
+	(	"()"|"("")" |
+		("("
+			name = <CHAN_ID>
+			{	jjtThis.addParameter(name.image);	}
+			("," 
+				name = <CHAN_ID>
+				{	jjtThis.addParameter(name.image);	}
+			)*
+	 	")" )
+	 )
+		
+	"=" Composition()
+}
+
+/**
+* A composition node is created if there is more than one process definition specified seperated by
+* the "|"-operator.
+*/
+void Composition() #void: {}{
+	(
+		P() ("|" P())*	
+	)#Composition(>1)
+}
+
+/**
+* No "P" node is created, it makes sure that the process definition can consist of the constructs
+* restriction, replication, defined agents and summation.
+*/
+void P() #void: {}{
+	Restriction() (Composition())?
+	| Replication() (Composition())?
+	| DefinedAgent()
+	| Summation()
+	| "(" Composition() ")"
+	
+}
+
+/**
+* Create a summation node if more than one choices are available seperated by the "+" operator.
+*/
+void Summation() #void: {}{
+	(
+		M() ("+" M())*
+	)#Summation(>1)
+}
+
+/**
+* No "M" node is created. This rule makes sure that choices are either inactive or start with one
+* of the constructs defined by Pi().
+*/
+void M() #void: {}{
+	<INACTION> | Pi()
+}
+
+/**
+* Create a restriction node and fill its parameter vector.
+*/
+void Restriction() : {Token name;}{
+	(
+		"^" ( name = <CHAN_ID> {	jjtThis.addResName(name.image);	}
+			("," name = <CHAN_ID> {	jjtThis.addResName(name.image);	} )*) 
+		
+		| "(" "^" (name = <CHAN_ID> {	jjtThis.addResName(name.image);	} 
+			("," name = <CHAN_ID> {	jjtThis.addResName(name.image);	} )*) ")"
+	)
+	(
+		//"(" Composition() ")"
+		//| 
+		P()
+	)
+}
+
+/**
+* Create a replication node.
+*/
+void Replication() : {}{
+	"!" 
+	(
+		//"(" Composition() ")"
+		//| 
+		P()
+	)
+}
+
+/**
+* Create a defined agent node and set its attributes agentName and parameters.
+* A defined agent and the agent that turns into this defined agent have to be defined in
+* the same pool.
+*/
+void DefinedAgent() : {Token name;}{
+	name = <AGENT_ID>
+	{	
+		if (pools.get(currentAgent) != null){
+			if (!pools.get(currentAgent).equals(pools.get(name.image)))
+				throw new PiParserError("Agents "+currentAgent+" and "+name.image+" are not in the same pool.");
+		}
+		else if (pools.get(name.image) != null)
+			throw new PiParserError("Agents "+currentAgent+" and "+name.image+" are not in the same pool.");
+		
+		jjtThis.setAgentName(name.image);	
+	}
+	
+	("()"|"("")" | 
+		(	"(" 
+				name = <CHAN_ID>
+				{	jjtThis.addParameter(name.image);	}
+				("," 
+					name = <CHAN_ID>
+					{	jjtThis.addParameter(name.image);	}
+				)*
+				
+			")"
+		)
+	)
+}
+
+
+/**
+* No "Pi" node is created. This rule makes sure that the pi-constructs send, receive, tau and match
+* can be used respectively.
+*/
+void Pi() #void: {}{
+	Send() | Receive() | Tau() | Match()
+}
+
+/**
+* Create a send node and set its attributes channelName and parameters.
+*/
+void Send() : {	Token channel;	}{
+	"'" channel = <CHAN_ID>  
+	{	jjtThis.setChannelName(channel.image);	}
+	("<>" | ( 
+		"<" channel = <CHAN_ID> 
+		{	jjtThis.addParameter(channel.image);	}
+		(("," channel = <CHAN_ID>)
+		{	jjtThis.addParameter(channel.image);	}
+		)*
+		">" 
+	)? )
+	Forward()
+}
+
+/**
+* Create a receive node and set its attributes channelName and parameters.
+*/
+void Receive() : {Token channel;}{
+	channel = <CHAN_ID> 
+	{	jjtThis.setChannelName(channel.image);	}
+	("()" | ( 
+		"(" channel = <CHAN_ID> 
+		{	jjtThis.addParameter(channel.image);	}
+		(("," channel = <CHAN_ID>)
+		{	jjtThis.addParameter(channel.image);	}
+		)*
+		")" 
+	)?)	
+	Forward()
+}
+
+/**
+* Create a tau node.
+*/
+void Tau() : {}{
+	<TAU> Forward()
+}
+
+/**
+* Create a match node and set its attributes name1 and name2 which refer to the channel names going
+* to be compared.
+*/
+void Match() : {Token name;}{
+	"[" name = <CHAN_ID> {	jjtThis.setName1(name.image);	}
+		(("=" {jjtThis.setKind(ASTMatch.EQUAL);})|("!="{jjtThis.setKind(ASTMatch.UNEQUAL);})) 
+		name = <CHAN_ID> {	jjtThis.setName2(name.image);	} "]" Pi()
+}
+
+/**
+* No "Forward" node is created - workaround for left recursion.
+*/
+void Forward() #void : {}{
+	"." (	Restriction() (Composition())?
+			| Replication() (Composition())?
+			| DefinedAgent()
+			| "(" Composition() ")"
+			| M())
+}
