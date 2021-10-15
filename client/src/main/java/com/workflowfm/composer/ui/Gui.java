@@ -3,6 +3,7 @@ package com.workflowfm.composer.ui;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JFrame;
@@ -11,6 +12,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import com.workflowfm.composer.exceptions.ComponentExceptionHandler;
+import com.workflowfm.composer.exceptions.NotFoundException;
 import com.workflowfm.composer.properties.ComposerProperties;
 import com.workflowfm.composer.prover.Prover;
 import com.workflowfm.composer.session.CompositionSession;
@@ -124,6 +126,15 @@ public class Gui {
 		// Enable antialiasing for Swing
 		System.setProperty("awt.useSystemAAFontSettings", "on");
 		System.setProperty("swing.aatext", "true");
+
+    if (args.length > 0) {
+      File file = new File(args[0]);
+      if (file.exists()) {
+        ComposerProperties.load(file);
+      } else {
+        new NotFoundException("file", args[0]).printStackTrace();
+      }
+    }
 				
 		Gui gui = new Gui();
 		gui.setup();

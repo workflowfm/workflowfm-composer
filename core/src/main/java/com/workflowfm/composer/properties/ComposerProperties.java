@@ -41,6 +41,20 @@ public class ComposerProperties {
     } 
   } 
 
+  public static void load(File file) {
+    try {
+      Parameters params = new Parameters();
+      FileBasedConfigurationBuilder<FileBasedConfiguration> builder =
+        new FileBasedConfigurationBuilder<FileBasedConfiguration>(PropertiesConfiguration.class)
+        .configure(params.properties()
+                   .setFile(file));
+      builder.setAutoSave(true);
+      prefs = builder.getConfiguration();
+    } catch (Exception e) {
+      e.printStackTrace();
+    } 
+  } 
+
 	public static void set(String key, int value) { 
 		Log.d("Set preference [" + key + "] to [" + value + "]");
 		prefs.setProperty(key, value); 

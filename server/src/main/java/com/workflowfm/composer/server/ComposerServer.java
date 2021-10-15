@@ -1,9 +1,11 @@
 package com.workflowfm.composer.server;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import com.workflowfm.composer.exceptions.NotFoundException;
 import com.workflowfm.composer.properties.ComposerProperties;
 import com.workflowfm.composer.prover.HolLightServerProcess;
 import com.workflowfm.composer.utils.Log;
@@ -49,9 +51,20 @@ public class ComposerServer {
 	
 	public static void main(String args[])
 	{
-		// if (args.length > 0) ComposerProperties.readProperties(args[0]);
-		ComposerServer server = new ComposerServer();
-		server.start(ComposerProperties.serverPort());
+    if (args.length > 0) {
+      File file = new File(args[0]);
+      if (file.exists()) {
+        ComposerProperties.load(file);
+
+        ComposerServer server = new ComposerServer();
+        server.start(ComposerProperties.serverPort());
+      } else {
+        new NotFoundException("file", args[0]).printStackTrace();
+      }
+    } else {
+      ComposerServer server = new ComposerServer();
+      server.start(ComposerProperties.serverPort());
+    }
 	}
 }
 
