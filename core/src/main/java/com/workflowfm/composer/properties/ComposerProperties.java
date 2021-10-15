@@ -2,6 +2,7 @@ package com.workflowfm.composer.properties;
 
 import java.io.File;
 
+import com.workflowfm.composer.exceptions.NotFoundException;
 import com.workflowfm.composer.utils.Log;
 
 import org.apache.commons.configuration2.FileBasedConfiguration;
@@ -11,24 +12,30 @@ import org.apache.commons.configuration2.builder.fluent.Parameters;
 
 public class ComposerProperties {
 
-  final private static String FILENAME = "application.properties";
+  final private static String FILENAME = "composer.properties";
+  final private static String PATH = ".workflowfm";
 
   private static FileBasedConfiguration prefs;
 
   static {
     try {
-      File file = new File(FILENAME);
-      Log.d("Reading preferences from: " + file.getAbsolutePath());
-      file.createNewFile();
+      String dir = System.getProperty("user.home") + File.separator + PATH;
+      File file = new File(dir + File.separator + FILENAME);
 
-      Parameters params = new Parameters();
-      FileBasedConfigurationBuilder<FileBasedConfiguration> builder =
-        new FileBasedConfigurationBuilder<FileBasedConfiguration>(PropertiesConfiguration.class)
-        .configure(params.properties()
-                  .setFileName(FILENAME));
+      if (file.getParentFile().exists() || file.getParentFile().mkdirs()) {
+        Log.d("Reading preferences from: " + file.getAbsolutePath());
+        file.createNewFile();
 
-      builder.setAutoSave(true);
-      prefs = builder.getConfiguration();
+        Parameters params = new Parameters();
+        FileBasedConfigurationBuilder<FileBasedConfiguration> builder =
+          new FileBasedConfigurationBuilder<FileBasedConfiguration>(PropertiesConfiguration.class)
+          .configure(params.properties()
+                     .setFile(file));
+        builder.setAutoSave(true);
+        prefs = builder.getConfiguration();
+      } else {
+        throw new NotFoundException("directory", dir);
+      }
     } catch (Exception e) {
       e.printStackTrace();
     } 
