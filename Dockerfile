@@ -3,8 +3,9 @@
 FROM gradle:jdk10 as builder
 
 # Build server
-COPY --chown=gradle:gradle hol-light/composer /home/gradle/src
+COPY --chown=gradle:gradle . /home/gradle/src
 WORKDIR /home/gradle/src
+RUN ls
 RUN gradle :server:build --stacktrace
 
 ### Base Image ###
@@ -16,7 +17,7 @@ USER root
 ENV PORT=7000
 
 # Update registry and install common dependencies.
-RUN apt-get update && \
+RUN apt-get --allow-releaseinfo-change update && \
     apt-get install -y \
         m4=1.4.18-2 \ 
         build-essential=12.6 \
@@ -30,7 +31,7 @@ RUN opam install \
     json-wheel.1.0.6+safe-string
 
 # Add & compile HOL-Light from source
-ADD hol-light /hol-light
+ADD server/hol-light /hol-light
 WORKDIR /hol-light
 RUN opam config exec -- make
 
@@ -40,8 +41,8 @@ WORKDIR /server
 RUN tar -xvf server.tar --strip-components 1
 
 # Load necessary launch files.
-ADD scripts ./scripts
-ADD docker.properties .
+ADD server/scripts ./scripts
+ADD server/docker.properties .
 RUN dos2unix scripts/*.sh scripts/*.ml docker.properties && \
     chmod -R +x scripts
 

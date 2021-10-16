@@ -1,0 +1,3 @@
+[submodule "hol-light"]
+	path = server/hol-light
+	url = https://github.com/workflowfm/hol-light.git
