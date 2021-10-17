@@ -11,18 +11,16 @@ RUN gradle :server:build --stacktrace
 
 ### Base Image ###
 # Install OPAM and OCaml v4.07.
-FROM ocaml/opam:alpine-3.13-ocaml-4.07
+FROM ocaml/opam:debian-10-ocaml-4.07
 ARG PORT
 USER root
 
 # Update registry and install common dependencies.
-RUN apk update && \
-    apk upgrade -U && \
-    apk add \
-        m4 \ 
+RUN apt-get update && \
+    apt-get install -y \
+        m4 \
         dos2unix \
-        openjdk11-jre-headless && \
-    rm -rf /var/cache/*
+        openjdk-11-jre-headless
 
 USER opam
 # Install library dependencies.
