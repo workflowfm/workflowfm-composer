@@ -10,19 +10,9 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  checkout:
-    name: Checkout repo
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          submodules: true 
-
   client:
     name: Build and release client
     runs-on: ubuntu-latest
-    needs: checkout
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -38,6 +28,9 @@ jobs:
 
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
 
       - name: Build client
         run: gradlew :client:distZip
@@ -64,12 +57,16 @@ jobs:
   server:
     name: Build server Docker image
     runs-on: ubuntu-latest
-    needs: checkout
     permissions:
       contents: read
       packages: write
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true 
+
       - name: Log in to the Container registry
         uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
         with:
