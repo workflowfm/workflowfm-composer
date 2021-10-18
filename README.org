@@ -1,7 +1,10 @@
 #+TITLE: WorkflowFM Composer Client & Server
 #+AUTHOR: Petros Papapanagiotou
 
-[[../../releases/latest][https://img.shields.io/badge/version-0.7-brightgreen.svg]]
+#+ATTR_ORG: :width 100
+[[https://raw.githubusercontent.com/workflowfm/pew/master/docs/static/images/WorkflowFM-Composer.png]]
+
+[[../../releases/latest][https://img.shields.io/badge/version-0.7.2h-brightgreen.svg]]
 [[https://opensource.org/licenses/Apache-2.0][https://img.shields.io/badge/license-Apache%202.0-yellowgreen.svg]]
 
 A Java-based server and Graphical User Interface for formally verified process composition using the [[https://github.com/workflowfm/workflowfm-reasoner][WorkflowFM Reasoner]].
@@ -12,7 +15,7 @@ A Java-based server and Graphical User Interface for formally verified process c
 
 This is part of the [[https://github.com/workflowfm/][WorkflowFM]] framework for correct-by-construction process and resource workflows.
 
-/More info and documentation coming soon.../
+[[http://docs.workflowfm.com/workflowfm-composer][More info and documentation can be found in the main webpage.]]
 
 * Quick Setup
 
