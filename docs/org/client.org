@@ -1,4 +1,4 @@
-#+TITLE: Documentation
+#+TITLE: Client Documentation
 #+AUTHOR: Petros Papapanagiotou
 #+EMAIL: petros@workflowfm.com
 #+OPTIONS: toc:nil email:t 
@@ -7,16 +7,16 @@
 #+HUGO_AUTO_SET_LASTMOD: t
 
 #+HUGO_BASE_DIR: ../
-#+HUGO_SECTION: docs
+#+HUGO_SECTION: client
 
 
-* Reference
+* Client
   :PROPERTIES:
   :EXPORT_FILE_NAME: _index
   :EXPORT_HUGO_MENU: :menu "main" :weight 100
   :END:
 
-Welcome to the *WorkflowFM Composer documentation*. 
+Welcome to the *WorkflowFM Composer Client documentation*. 
 
 {{< button "./install/" "Get started" >}}
 * Install

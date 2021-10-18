@@ -10,7 +10,7 @@ draft: false
 A Java-based server and GUI for formally verified process composition using the [WorkflowFM Reasoner](http://docs.workflowfm.com/workflowfm-reasoner/).
 {{< /tip >}}
 
-{{< button "docs/" "Read the Docs" >}}{{< button "https://github.com/workflowfm/workflowfm-composer" "Source" >}}
+{{< button "client/" "Client Docs" >}}{{< button "server/" "Server Docs" >}}{{< button "https://github.com/workflowfm/workflowfm-composer" "Source" >}}
 
 ## About
 
