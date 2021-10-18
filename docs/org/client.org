@@ -8,7 +8,7 @@
 
 #+HUGO_BASE_DIR: ../
 #+HUGO_SECTION: client
-
+#+HUGO_TYPE: docs
 
 * Client
   :PROPERTIES:
@@ -18,16 +18,37 @@
 
 Welcome to the *WorkflowFM Composer Client documentation*. 
 
-{{< button "./install/" "Get started" >}}
-* Install
+{{< button "./getting-started/" "Get started" >}}
+* Setup
 :PROPERTIES:
-:EXPORT_HUGO_SECTION*: install
+:EXPORT_HUGO_SECTION*: getting-started
 :END:
 
-** Installation
+** Getting Started
    :PROPERTIES:
    :EXPORT_FILE_NAME: _index
    :EXPORT_HUGO_WEIGHT: 101
    :END:
 
-The WorkflowFM Composer can be installed
+   The WorkflowFM Composer client is built using Java 11 and [[https://gradle.org/][Gradle]].
+
+   It requires a running instance of the [[../../server][server]], with an accessible host and port.
+
+   Install simply by grabbing the zipped distribution from the [[https://github.com/workflowfm/workflowfm-composer/releases/latest][latest release]] and unzip to your chosen location.
+
+   Start the Client using (Linux/Mac):
+   #+BEGIN_SRC sh
+     ./bin/WorkflowFM_Composer 
+   #+END_SRC
+
+   or similarly in Windows:
+   #+BEGIN_SRC
+     .\bin\WorkflowFM_Composer.bat
+   #+END_SRC
+
+   User preferences are stored in the user's home directory, under ~.workflowfm/~.
+
+   Once loaded, enter the address and port of the server in the dialog provided:
+
+   {{< picture "client/ConnectDialog.png" "client/ConnectDialog.png" "dialog titled Connect to Reasoner with input fields for a host and port" >}}
+

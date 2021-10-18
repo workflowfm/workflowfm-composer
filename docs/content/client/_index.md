@@ -1,7 +1,8 @@
 ---
 title: "Client"
 author: ["Petros Papapanagiotou"]
-lastmod: 2021-10-18T10:14:30+01:00
+lastmod: 2021-10-18T11:35:50+01:00
+type: "docs"
 draft: false
 menu:
   main:
@@ -11,4 +12,4 @@ menu:
 
 Welcome to the **WorkflowFM Composer Client documentation**.
 
-{{< button "./install/" "Get started" >}}
+{{< button "./getting-started/" "Get started" >}}

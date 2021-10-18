@@ -8,7 +8,7 @@
 
 #+HUGO_BASE_DIR: ../
 #+HUGO_SECTION: server
-
+#+HUGO_TYPE: docs
 
 * Server
   :PROPERTIES:
