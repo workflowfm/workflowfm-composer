@@ -18,16 +18,53 @@
 
 Welcome to the *WorkflowFM Composer Server documentation*. 
 
+The Server provides an intermediate layer between the [[http://docs.workflowfm.com/workflowfm-reasoner/][WorkflowFM Reasoner]] and the Client. It exposes a raw socket to allow the client to communicate remotely with the reasoner.
+
+{{< tip warning >}}
+The server is currently insecure for public use. Avoid deploying it in a public server or outside a firewall.
+{{< /tip >}}
+
+The reasoner is based on [[https://github.com/jrh13/hol-light][HOL Light]], which runs on the OCaml toplevel. This makes it difficult to manage in a scalable way and to connect to it remotely or through the web. It also limits its usage to a single user. The server addresses theses issues by managing connections through a raw socket and queueing requests to the reasoner.
+
+The server can be deployed either manually or through Docker. Using the [[https://github.com/workflowfm/workflowfm-composer/pkgs/container/composer-server][existing Docker image]] makes things much easier, but this documentation covers a few different ways to build and deploy it.
+
+Once the server is deployed, you can run an connect multiple [[../client][clients]] to it.
+
+
 {{< button "./install/" "Get started" >}}
-* Install
+
+* Image
 :PROPERTIES:
-:EXPORT_HUGO_SECTION*: install
+:EXPORT_HUGO_SECTION*: quick-setup 
 :END:
 
-** Installation
+** Quick Setup
    :PROPERTIES:
    :EXPORT_FILE_NAME: _index
    :EXPORT_HUGO_WEIGHT: 101
    :END:
 
-The WorkflowFM Composer can be installed
+   The easiest setup is to use the latest available [[https://github.com/workflowfm/workflowfm-composer/pkgs/container/composer-server][Docker image]].
+
+   Pull the image using:
+   #+BEGIN_SRC sh
+     docker pull ghcr.io/workflowfm/composer-server:latest
+   #+END_SRC
+   
+   Then run a container using:
+   #+BEGIN_SRC sh
+     docker run -p 7000:7000 --name workflowfm-server --detach ghcr.io/workflowfm/composer-server:latest
+   #+END_SRC
+   
+   - The name ~workflowfm-server~ is optional and can be changed to whatever you want your server container to be named.
+   - The port can also be bound to a different system port, e.g. using ~-p 9000:7000~ to bind it to port ~9000~.
+
+   {{< tip >}}
+   The container may take a few minutes to fully start!
+   {{< /tip >}}
+ 
+   This is be cause it loads [[https://github.com/workflowfm/hol-light][HOL Light]] and the [[https://github.com/workflowfm/workflowfm-reasoner][WorkflowFM Reasoner]] from scratch. You can follow progress using:
+
+   #+BEGIN_SRC sh
+     docker logs --follow workflowfm-server
+   #+END_SRC
