@@ -4,7 +4,7 @@
 [[../../releases/latest][https://img.shields.io/badge/version-0.7-brightgreen.svg]]
 [[https://opensource.org/licenses/Apache-2.0][https://img.shields.io/badge/license-Apache%202.0-yellowgreen.svg]]
 
-A Java-based Graphical User Interface for formally verified process composition using the [[https://github.com/workflowfm/workflowfm-reasoner][WorkflowFM Reasoner]].
+A Java-based server and Graphical User Interface for formally verified process composition using the [[https://github.com/workflowfm/workflowfm-reasoner][WorkflowFM Reasoner]].
 
 | [[https://aiml.inf.ed.ac.uk/][Artificial Intelligence Modelling Lab]] |
 | [[https://web.inf.ed.ac.uk/aiai][Artificial Intelligence and its Applications Institute]] |
@@ -14,6 +14,50 @@ This is part of the [[https://github.com/workflowfm/][WorkflowFM]] framework for
 
 /More info and documentation coming soon.../
 
+* Quick Setup
+
+  - Minimum requirement: Java 11
+
+** Client
+   Grab the zipped distribution from the [[https://github.com/workflowfm/workflowfm-composer/releases/latest][latest release]].
+
+   Start the Client using (Linux/Mac):
+   #+BEGIN_SRC sh
+     ./bin/WorkflowFM_Composer 
+   #+END_SRC
+
+   or similarly in Windows:
+   #+BEGIN_SRC sh
+     .\bin\WorkflowFM_Composer.bat
+   #+END_SRC
+
+   User preferences are stored in the user's home directory, under ~.workflowfm/~.
+
+   Once loaded, enter the address and port of the server in the dialog provided.
+
+** Server
+   The easiest setup is to use the latest available [[https://github.com/workflowfm/workflowfm-composer/pkgs/container/composer-server][Docker image]].
+
+   Pull the image using:
+   #+BEGIN_SRC sh
+     docker pull ghcr.io/workflowfm/composer-server:latest
+   #+END_SRC
+   
+   Then run a container using:
+   #+BEGIN_SRC sh
+     docker run -p 7000:7000 --name workflowfm-server --detach ghcr.io/workflowfm/composer-server:latest
+   #+END_SRC
+   
+   - The name ~workflowfm-server~ is optional and can be changed to whatever you want your server container to be named.
+   - The port can also be bound to a different system port, e.g. using ~-p 9000:7000~ to bind it to port ~9000~.
+
+   /:warning:/ *Note: The container may take a few minutes to fully start!* /:warning:/
+
+   This is be cause it loads [[https://github.com/workflowfm/hol-light][HOL Light]] and the [[https://github.com/workflowfm/workflowfm-reasoner][WorkflowFM Reasoner]] from scratch. You can follow progress using:
+
+   #+BEGIN_SRC sh
+     docker logs --follow workflowfm-server
+   #+END_SRC
 
 * Authors
 :PROPERTIES:

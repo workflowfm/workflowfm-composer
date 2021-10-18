@@ -21,6 +21,7 @@ jar {
 applicationDistribution.from("../") {
     include 'LICENSE'
     include 'NOTICE'
+    include 'README.org'
     into '.'
 }
 
