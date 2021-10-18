@@ -72,6 +72,7 @@ This is part of the [[https://github.com/workflowfm/][WorkflowFM]] framework for
 
    A big thank you to the following contributors in order of appearance:
 
+   - [[https://homepages.inf.ed.ac.uk/jdf/][Jacques Fleuriot]]
    - [[https://www.seanw.org][Sean Wilson]]
    - [[https://github.com/JeVaughan][James Vaughan]]
    - [[https://github.com/pilif0][Filip Smola]]
