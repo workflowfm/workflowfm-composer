@@ -33,15 +33,25 @@ Once the server is deployed, you can run an connect multiple [[../client][client
 
 {{< button "./install/" "Get started" >}}
 
-* Image
+* Docker
 :PROPERTIES:
-:EXPORT_HUGO_SECTION*: quick-setup 
+:EXPORT_HUGO_SECTION*: docker
 :END:
 
-** Quick Setup
+** Docker
    :PROPERTIES:
    :EXPORT_FILE_NAME: _index
    :EXPORT_HUGO_WEIGHT: 101
+   :END:
+
+   Docker helps automate the deployment of the server and the complexity of the reasoner in particular.
+
+   You can use the published image or build it yourself.
+
+** Quick Setup
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: image
+   :EXPORT_HUGO_WEIGHT: 110
    :END:
 
    The easiest setup is to use the latest available [[https://github.com/workflowfm/workflowfm-composer/pkgs/container/composer-server][Docker image]].
@@ -63,8 +73,155 @@ Once the server is deployed, you can run an connect multiple [[../client][client
    The container may take a few minutes to fully start!
    {{< /tip >}}
  
-   This is be cause it loads [[https://github.com/workflowfm/hol-light][HOL Light]] and the [[https://github.com/workflowfm/workflowfm-reasoner][WorkflowFM Reasoner]] from scratch. You can follow progress using:
+   This is because it loads [[https://github.com/workflowfm/hol-light][HOL Light]] and the [[https://github.com/workflowfm/workflowfm-reasoner][WorkflowFM Reasoner]] from scratch. You can follow progress using:
 
    #+BEGIN_SRC sh
      docker logs --follow workflowfm-server
    #+END_SRC
+
+
+** Build Image
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: build
+   :EXPORT_HUGO_WEIGHT: 120
+   :END:
+
+   You can build the Docker image yourself from source.
+
+   First, clone the repository:
+
+   #+BEGIN_SRC sh
+     git clone https://github.com/workflowfm/workflowfm-composer.git
+   #+END_SRC
+
+   Make sure to /recursively/ populate submodules:
+   #+BEGIN_SRC sh
+     cd workflowfm-composer/
+     git submodule update --init --recursive --depth 1
+   #+END_SRC
+
+   Then build the image with the provided ~Dockerfile~:
+   #+BEGIN_SRC sh
+     docker build -t composer-server .
+   #+END_SRC
+   
+   Then run a container using:
+   #+BEGIN_SRC sh
+     docker run -p 7000:7000 --name workflowfm-server --detach composer-server
+   #+END_SRC
+   
+   - The name ~workflowfm-server~ is optional and can be changed to whatever you want your server container to be named.
+   - The port can also be bound to a different system port, e.g. using ~-p 9000:7000~ to bind it to port ~9000~.
+
+   {{< tip >}}
+   The container may take a few minutes to fully start!
+   {{< /tip >}}
+ 
+   This is because it loads [[https://github.com/workflowfm/hol-light][HOL Light]] and the [[https://github.com/workflowfm/workflowfm-reasoner][WorkflowFM Reasoner]] from scratch. You can follow progress using:
+
+   #+BEGIN_SRC sh
+     docker logs --follow workflowfm-server
+   #+END_SRC
+
+* Manual
+:PROPERTIES:
+:EXPORT_HUGO_SECTION*: build
+:END:
+
+** Manual Build
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: _index
+   :EXPORT_HUGO_WEIGHT: 201
+   :END:
+
+   A manual build is also possible, albeit more tedious.
+
+   It requires a local installation of the WorkflowFM Reasoner, in addition to building and running the server itself.
+
+** Server
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: server
+   :EXPORT_HUGO_WEIGHT: 210
+   :END:
+
+   The server can be built using [[https://gradle.org/][Gradle]], which ships with the repository.
+
+   You can use either:
+   - Pre-installed Gradle: ~gradle~
+   - Linux: ~./gradlew~
+   - Windows: ~gradlew.bat~
+
+   {{< tip >}} 
+   Building requires *JDK 11* or above.
+   {{< /tip >}}
+   
+   The server can be compiled and packaged with a single command:
+   #+BEGIN_SRC sh
+     gradle :server:distZip
+   #+END_SRC
+
+   This will create the file ~server/build/distributions/WorkflowFM_Server-{VERSION}.zip~. 
+
+   Unzip it to your favourite location to obtained a server installation.
+
+** Reasoner
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: reasoner
+   :EXPORT_HUGO_WEIGHT: 220
+   :END:
+*** Installation
+
+    The WorkflowFM Reasoner can be installed following the [[http://docs.workflowfm.com/workflowfm-reasoner/docs/install/][instructions in its documentation]].
+
+    The involved ~hol-light~ repository can already be found as a submodule under ~server/hol-light~.
+
+    Using [[http://docs.workflowfm.com/workflowfm-reasoner/docs/install/hol-light/#checkpointing][checkpointing]], if possible, can help build a server that runs /instantly/.
+
+*** Launch script
+    :PROPERTIES:
+    :CUSTOM_ID: script
+    :END:
+
+    Once the reasoner is installed and working, we need to build a script that runs the reasoner and pipes the input/output to the server.
+
+    The ~scripts/~ directory contains a couple of bash scripts that can achieve this. Both scripts assume that the reasoner is installed in a ~hol-light/~ directory within the server installation. If that is not the case, this can be adjusted bya simole symbolic link:
+
+    #+BEGIN_SRC sh
+      ln -s full/path/to/reasoner hol-light
+    #+END_SRC
+
+    - If checkpointing (dmtcp) was used, the reasoner can run using ~scripts/launch_dmtcp_local.sh~.
+    - If checkpointing is *not* available, you can use ~scripts/launch_prover_local.sh~ which will load HOL Light and the reasoner from scratch.
+
+      Make sure you run the corresponding script and verify it does load the reasoner correctly and without errors.
+
+** Run
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: run
+   :EXPORT_HUGO_WEIGHT: 230
+   :END:
+*** Configuration
+
+    Running the server requires a ~.properties~ configuration file with 3 elements:
+    1. ~server~: The host name (default: ~localhost~).
+    2. ~port~: The port to bind to for listening (default: ~7000~).
+    3. ~launchProverCommand~: The location of the [[#script][script to run the reasoner]].
+
+    The contents of the ~docker.properties~ file, which is used in the Docker image, is shown as an example below:
+    #+begin_example
+    server=localhost
+    port=7000
+    launchProverCommand=/server/scripts/launch_prover_docker.sh
+    #+end_example
+
+*** Launch
+
+    To summarize, running the server requires the following:
+    1. An installation of the Java server.
+    2. A working installation of the reasoner.
+    3. A configuration file.
+    
+    With everything in place, the server can be run from its installation with the following command:
+    #+BEGIN_SRC sh
+      ./bin/WorkflowFM_Server /path/to/configuration/file.properties
+    #+END_SRC

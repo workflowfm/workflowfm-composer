@@ -1,10 +1,10 @@
 ---
 title: "Quick Setup"
 author: ["Petros Papapanagiotou"]
-lastmod: 2021-10-18T17:02:49+01:00
+lastmod: 2021-10-18T23:30:36+01:00
 type: "docs"
 draft: false
-weight: 101
+weight: 110
 ---
 
 The easiest setup is to use the latest available [Docker image](https://github.com/workflowfm/workflowfm-composer/pkgs/container/composer-server).
@@ -28,7 +28,7 @@ docker run -p 7000:7000 --name workflowfm-server --detach ghcr.io/workflowfm/com
 The container may take a few minutes to fully start!
 {{< /tip >}}
 
-This is be cause it loads [HOL Light](https://github.com/workflowfm/hol-light) and the [WorkflowFM Reasoner](https://github.com/workflowfm/workflowfm-reasoner) from scratch. You can follow progress using:
+This is because it loads [HOL Light](https://github.com/workflowfm/hol-light) and the [WorkflowFM Reasoner](https://github.com/workflowfm/workflowfm-reasoner) from scratch. You can follow progress using:
 
 ```sh
 docker logs --follow workflowfm-server
