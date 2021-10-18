@@ -1,3 +1,6 @@
 [submodule "hol-light"]
 	path = server/hol-light
 	url = https://github.com/workflowfm/hol-light.git
+[submodule "hugo-compose-theme"]
+	path = docs/themes/compose
+	url = https://github.com/onweru/compose/
