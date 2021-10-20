@@ -24,14 +24,14 @@ The Server provides an intermediate layer between the [[http://docs.workflowfm.c
 The server is currently insecure for public use. Avoid deploying it in a public server or outside a firewall.
 {{< /tip >}}
 
-The reasoner is based on [[https://github.com/jrh13/hol-light][HOL Light]], which runs on the OCaml toplevel. This makes it difficult to manage in a scalable way and to connect to it remotely or through the web. It also limits its usage to a single user. The server addresses theses issues by managing connections through a raw socket and queueing requests to the reasoner.
+The reasoner is based on [[https://github.com/jrh13/hol-light][HOL Light]], which runs on the OCaml toplevel. This makes it difficult to manage in a scalable way and to connect to it remotely or through the web. It also limits its usage to a single user. The server addresses these issues by managing connections through a raw socket and queueing requests to the reasoner.
 
 The server can be deployed either manually or through Docker. Using the [[https://github.com/workflowfm/workflowfm-composer/pkgs/container/composer-server][existing Docker image]] makes things much easier, but this documentation covers a few different ways to build and deploy it.
 
 Once the server is deployed, you can run an connect multiple [[../client][clients]] to it.
 
 
-{{< button "./install/" "Get started" >}}
+{{< button "./docker/image/" "Get started" >}}
 
 * Docker
 :PROPERTIES:
