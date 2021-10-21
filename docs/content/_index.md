@@ -7,16 +7,41 @@ draft: false
 [![img](https://img.shields.io/badge/version-{{< version >}}-brightgreen.svg)](https://github.com/workflowfm/workflowfm-reasoner/releases/latest) [![img](https://img.shields.io/badge/license-Apache%202.0-yellowgreen.svg)](https://opensource.org/licenses/Apache-2.0)
 
 {{< tip >}}
-A Java-based server and GUI for formally verified process composition using the [WorkflowFM Reasoner](http://docs.workflowfm.com/workflowfm-reasoner/).
+A diagrammatic tool for formally verified process modelling and composition.
 {{< /tip >}}
 
 {{< button "client/" "Client Docs" >}}{{< button "server/" "Server Docs" >}}{{< button "https://github.com/workflowfm/workflowfm-composer" "Source" >}}
+
 
 ## About
 
 {{< tip warning >}}
 *Docs are under construction...*
 {{< /tip >}}
+
+The WorkflowFM Composer consists of a Java-based server and GUI for formally verified process composition using the [WorkflowFM Reasoner](http://docs.workflowfm.com/workflowfm-reasoner/). It provides a visual, diagrammatic interface to specify processes based on their input and output resources, and compose them together to form more complex workflows. 
+
+Actions in the GUI of the [Client](client/) are sent to the [Server](server/), which in turn is able to interact directly with the [Reasoner](http://docs.workflowfm.com/workflowfm-reasoner/). The Reasoner then performs the necessary logic-based inference within the rigorous environment of the HOL Light theorem prover. 
+
+The end result is a composite process that is provably correct and has the following properties:
+- **Systematic resource accounting**: No resources appear out of nowhere or disappear into thin air.
+- **Deadlock and livelock freedom**: The constructed workflows can be executed without fear for deadlocks or livelocks.
+- **Type checked composition**: The correctness of the types of all connected resources is ensured via the logical proof.
+- **Fully asynchronous and concurrent execution**: During workflow execution, each component process can be executed fully asynchronously (see the [PEW engine](http://docs.workflowfm.com/pew) for more details) and concurrently, without introducing any conflicts, race conditions, or deadlocks.
+
+
+### Key Features
+
+- Visual specification of processes based on ther input and output resources.
+- Intuitive gestures for process composition.
+- Formally verified composite processes based on rigorous logic-based reasoning.
+- Simplified diagrammatic representation of complex logic-based deduction.
+- Automated tracking of unused resources in compositions.
+- Highlighting of matching resources.
+- Workspaces for the development of multiple compositions at the same time.
+- Workflow visuazliation using the [PiVizTool](http://frapu.de/bpm/piviztool.html).
+- Export Scala code to execute workflows using the [PEW engine](http://docs.workflowfm.com/pew).
+- Export of PNG images.
 
 
 <a id="authors"></a>
