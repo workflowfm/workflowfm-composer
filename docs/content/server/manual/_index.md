@@ -1,10 +1,10 @@
 ---
 title: "Manual Build"
 author: ["Petros Papapanagiotou"]
-lastmod: 2022-01-05T12:26:56+00:00
+lastmod: 2022-01-05T13:47:51+00:00
 type: "docs"
 draft: false
-weight: 201
+weight: 10201
 ---
 
 A manual build is also possible, albeit more tedious.

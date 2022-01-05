@@ -1,10 +1,10 @@
 ---
 title: "Quick Setup"
 author: ["Petros Papapanagiotou"]
-lastmod: 2022-01-05T12:26:55+00:00
+lastmod: 2022-01-05T13:47:49+00:00
 type: "docs"
 draft: false
-weight: 110
+weight: 10110
 ---
 
 The easiest setup is to use the latest available [Docker image](https://github.com/workflowfm/workflowfm-composer/pkgs/container/composer-server).

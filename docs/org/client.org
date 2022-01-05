@@ -9,6 +9,7 @@
 #+HUGO_BASE_DIR: ../
 #+HUGO_SECTION: client
 #+HUGO_TYPE: docs
+#+HUGO_PAIRED_SHORTCODES: tip 
 
 * Client
   :PROPERTIES:
@@ -18,7 +19,21 @@
 
 Welcome to the *WorkflowFM Composer Client documentation*. 
 
-{{< button "./getting-started/" "Get started" >}}
+The Client provides a Java-based Graphical User Interface or formally verified process composition using the [[http://docs.workflowfm.com/workflowfm-reasoner/][WorkflowFM Reasoner]].
+
+#+BEGIN_tip
+The Client requires a running instance of the [[../server][Server]].
+#+END_tip
+
+It allows the specification of processes using their input and output resources. Processes can then be composed together with simple mouse gestures. Every composition action is sent to the reasoner, via the server, and then performed using logic-based reasoning so that the result is formally verified.
+
+#+BEGIN_tip
+User preferences are stored in the user's home directory, under ~.workflowfm/~.
+#+END_tip
+
+
+#+hugo: {{< button "./getting-started/" "Get started" >}}
+
 * Setup
 :PROPERTIES:
 :EXPORT_HUGO_SECTION*: getting-started
@@ -30,25 +45,431 @@ Welcome to the *WorkflowFM Composer Client documentation*.
    :EXPORT_HUGO_WEIGHT: 101
    :END:
 
-   The WorkflowFM Composer client is built using Java 11 and [[https://gradle.org/][Gradle]].
+The WorkflowFM Composer client is built using *Java 11* and [[https://gradle.org/][Gradle]].
+   
+It requires a running instance of the [[../../server][server]], with an accessible host and port.
 
-   It requires a running instance of the [[../../server][server]], with an accessible host and port.
+This section covers installation and running.
 
-   Install simply by grabbing the zipped distribution from the [[https://github.com/workflowfm/workflowfm-composer/releases/latest][latest release]] and unzip to your chosen location.
+** Install 
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: install
+   :EXPORT_HUGO_WEIGHT: 110
+   :END:
 
-   Start the Client using (Linux/Mac):
-   #+BEGIN_SRC sh
-     ./bin/WorkflowFM_Composer 
-   #+END_SRC
+To install, you can either grab the pre-built zip file or build the client yourself.
 
-   or similarly in Windows:
-   #+BEGIN_SRC
+*** Release
+
+Install simply by grabbing the zipped distribution from the [[https://github.com/workflowfm/workflowfm-composer/releases/latest][latest release]] and unzip to your chosen location.
+
+*** Manual build
+
+The client can be built manually using [[https://gradle.org/][Gradle]], which ships with the repository.
+
+You can use either:
+  - Pre-installed Gradle: ~gradle~
+  - Linux: ~./gradlew~
+  - Windows: ~gradlew.bat~
+
+#+BEGIN_tip 
+Building requires *JDK 11* or above.
+#+END_tip
+
+The client can be compiled and packaged with a single command:
+#+BEGIN_SRC sh
+  gradle :client:distZip
+#+END_SRC
+
+This will create the file ~client/build/distributions/WorkflowFM_Composer-{VERSION}.zip~. 
+
+Unzip it to your favourite location to obtained a client installation.
+
+
+
+** Run
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: run
+   :EXPORT_HUGO_WEIGHT: 120
+   :END:
+
+
+Start the Client using (Linux/Mac):
+#+BEGIN_SRC sh
+  ./bin/WorkflowFM_Composer 
+#+END_SRC
+
+or similarly in Windows:
+#+BEGIN_SRC
      .\bin\WorkflowFM_Composer.bat
-   #+END_SRC
+#+END_SRC
 
-   User preferences are stored in the user's home directory, under ~.workflowfm/~.
+Once loaded, enter the address and port of the server in the dialog provided:
 
-   Once loaded, enter the address and port of the server in the dialog provided:
+#+hugo: {{< picture "client/ConnectDialog.png" "client/ConnectDialog.png" "dialog titled Connect to Reasoner with input fields for a host and port" >}}
 
-   {{< picture "client/ConnectDialog.png" "client/ConnectDialog.png" "dialog titled Connect to Reasoner with input fields for a host and port" >}}
+If the client is able to connect to the server, you will see the full client interface:
 
+#+hugo: {{< picture "client/Start.png" "client/Start.png" "the client graphical user interface when it is first started" >}}
+
+
+* Use
+:PROPERTIES:
+:EXPORT_HUGO_SECTION*: use
+:END:
+
+** Usage
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: _index
+   :EXPORT_HUGO_WEIGHT: 301
+   :END:
+
+This section covers basic usage of the client.
+
+
+** Quick Start
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: quick
+   :EXPORT_HUGO_WEIGHT: 310
+   :END:
+
+   A quick overview of some of the features is described in the following tasks:
+
+*** Create
+- Click on the @@hugo:{{< icon "client/icons/CreateProcess.png" "create process icon" "inline" >}}@@ ~Create Process~ icon.
+- Double click on the /process box/ labelled ~P1~ to *rename the process*.
+- Double click on one of the /edges/ (initially labelled ~X~) to *rename the corresponding resource*.
+- Double click on one of the small, /resource circles/ to *add a new branch*.
+- Right-click on one of the small, /resource circles/ to *add a branch of different type*  (from parallel to optional and vice-versa) or to *delete a branch*.
+
+*** Compose 
+- Open a *new workspace* with the @@hugo:{{< icon "client/icons/CreateWorkspace.png" "create workspace icon" "inline" >}}@@ ~Create Workspace~ icon.
+- Double click on a /process/ in the ~Processes~ list on the left to *add its graph to the workspace*.
+- Compose processes *in sequence* by selecting (clicking) an /output resource/ (edge or circle) and then *right-clicking* an /input resource/ with the same name belonging to a different process.
+- Compose processes *in parallel* by selecting (clicking) a /process box/ then *right-clicking* /another process box/.
+- Compose processes *conditionally* by selecting (clicking) an /input resource/ (edge or circle) and then *right-clicking* another /input resource/ belonging to different process.
+- Right click on a /process box/ and select @@hugo:{{< icon "client/icons/Composite.png" "composite process icon" "inline" >}}@@ ~Store Composition~ to collapse and *store a composite proces*s as a reusable composite component under a new name.
+
+*** Edit & Verify
+- Right click on a /process/ in the ~Processes~ list on the left.
+- Select @@hugo:{{< icon "client/icons/EditProcess.png" "edit process icon" "inline" >}}@@ ~Edit Process~ to *change the specification* of an /atomic/ process.
+- Select @@hugo:{{< icon "client/icons/Delete.png" "delete icon" "inline" >}}@@ ~Delete Process~ to delete a process.
+- Changing or deleting a process specification affects all composite processes that depend on it. These become *unverified*: @@hugo:{{< icon "client/icons/CompositeWarning.png" "composite process warning icon" "inline" >}}@@.
+- Right click on an /unverified process/ and select @@hugo:{{< icon "client/icons/VerifyParents.png" "verify process&parents icon" "inline" >}}@@ ~Verify Process&Parents~ to *rerun and verify the composition*.
+
+
+** Create & Edit
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: edit
+   :EXPORT_HUGO_WEIGHT: 320
+   :END:
+
+- Clicking on the @@hugo:{{< icon "client/icons/CreateProcess.png" "create process icon" "inline" >}}@@ ~Create Process~ icon at any time opens a new window for creating a new atomic process.
+- Right-clicking on an atomic process in the ~Processes~ list on the left and then clicking the @@hugo:{{< icon "client/icons/EditProcess.png" "edit process icon" "inline" >}}@@ ~Edit Process~ option opens the same window to allow edits.
+
+The available functionality is described below.
+
+Actions can be *undone/redone* at any time using the undo/redo arrows at the top, or ~Ctrl-Z~ and ~Ctrl-Y~ respectively.
+
+Click the ~Done~ button at the bottom when all the desired edits are completed. This will create the new process or update the one being edited.
+
+New and edited atomic processes are added to the ~Processes~ list on the left.
+
+#+BEGIN_tip
+Editing an atomic process that is used in some composition may render that composition invalid (~unverified~). The composition will need to be [[#verify][verified again]] with the new atomic specification.
+#+END_tip
+
+*** Process names
+:PROPERTIES:
+:CUSTOM_ID: process-names
+:END:
+
+An initial, unique name ~P#~ is automatically generated for the process. 
+
+#+ATTR_SHORTCODE: warning
+#+BEGIN_tip
+Process names *must* start with a letter and may *only* contain /letters, numbers and underscores/.
+#+END_tip
+
+A process can be renamed in 2 ways:
+- By clicking the @@hugo:{{< icon "client/icons/Rename.png" "rename icon" "inline" >}}@@ ~Rename~ icon.
+- By double clicking the blue box containing the name of the process.
+
+#+BEGIN_tip
+It is standard practice in process modelling to name processes *using verbs* that describe the corresponding action being taken. For example: ~CreateAccount~, ~GenerateReport~, ~CheckOutcome~.
+#+END_tip
+
+*** Resource names
+
+Resource names describe the types of input or output resources for a process. 
+
+#+ATTR_SHORTCODE: warning
+#+BEGIN_tip
+Resource names *must* start with a letter and may *only* contain /letters, numbers and underscores/.
+#+END_tip
+
+A resource can be renamed by double clicking the *edge* (line) that carries its name.
+
+#+BEGIN_tip
+It is standard practice in process modelling to name resources *using nouns* that describe the corresponding concrete or abstract resource. For example: ~CreatedAccount~, ~GeneratedReport~, ~Payment~.
+#+END_tip
+
+*** Resource branches
+
+Both input and output resources can be added as branches in a tree-like structure. A dialog to fill in the name of the newly added resource is provided each time.
+
+We can specify branches of both parallel (solid lines) and optional (dashed lines) resources. 
+
+- *Double-clicking* on a blue resource circle adds a new resource *at the same level and branch type as the circle*. 
+
+   /For example, if a circle belongs to an optional branch (dashed line), double clicking it will produce a new option from the same root as the circle./
+
+- *Right-clicking* on a blue resource circle reveals the @@hugo:{{< icon "client/icons/Branch.png" "branched arrows icon" "inline" >}}@@ ~Add branch~ option. Selecting this will add a *new resource branch of the opposite type* to that circle. 
+
+   /For example, if a circle belongs to an optional branch (dashed line), the ~Add Branch~ option will add a new parallel branch starting from that circle and including the original resource (or its children) and the new resource as children./
+
+   This allows us to change the type of a branch and alternate between parallel and optional branching. 
+
+- *Right-clicking* on a blue resource circle also reveals the @@hugo:{{< icon "client/icons/Delete.png" "delete icon" "inline" >}}@@ ~Delete branch~ option. Selecting this will *delete the resource or the entire branch of resources* belonging to the circle. 
+
+  This may lead to branches of the same type collapsing together in a single branch.
+
+  As with all other edit actions, this action can be undone.
+
+
+
+** Compose
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: compose
+   :EXPORT_HUGO_WEIGHT: 330
+   :END:
+
+Composition involves the combination of 2 processes (/binary compositions/) in a single composite process.
+
+- This requires an active ~Workspace~. A new workspace can be created using the @@hugo:{{< icon "client/icons/CreateWorkspace.png" "create workspace icon" "inline" >}}@@ ~Create Workspace~ icon.
+- Processes can be added to the workspace by *double-clicking* them in the ~Processes~ list on the left or by *right-clicking* them and selecting the @@hugo:{{< icon "client/icons/Add.png" "add icon" "inline" >}}@@ ~Add Graph~ option.
+
+Once added, processes can be composed together in 3 ways:
+
+1. *In sequence*
+2. *In parallel*
+3. *Conditionally*
+
+
+All composition actions are performed in **2 steps*: *first select (left-click)* on an element *and then right-click* on a target element to compose them together. The selection is different for each action, as described below.
+
+Each time a composition action is performed successfully, a new /intermediate/ composition is created and listed in the ~Compositions~ list on the left.
+
+#+BEGIN_tip
+Each workspace has its own ~Compositions~ list. Make sure you have an active workspace to view its list. You may need to drag and resize the list using the bar at the bottom of the ~Processes~ list to make it visible.
+#+END_tip
+
+Intermediate compositions are named automatically as ~_Step#~ using a unique number (With separate counting for each workspace). These can be used as components in further composition actions. They cannot be renamed, but they can be [[#verify][stored as new processes]]. 
+
+In some cases and due to certain design decisions (some of which are mentioned below), the result of a composition action may seem bizarre or unexpected. However, every composition action is performed using *formal, logic-based reasoning* and is guaranteed to be correct. 
+
+For example, the reasoner guarantees systematic resource accounting, so that unused resources (for example in sequences of optional processes) may appear as new outputs.
+
+*** In Sequence
+
+Composing 2 processes in sequence creates a composition where the output of one process connects to an input of the same type of another process. This is the most common composition action.
+
+- This can be accomplished by seleting a input/output resource and then right-clicking on a corresponding output/input resource of another process.
+
+The UI helps identify valid targets for sequential composition:
+- *Hovering* above a resource highlights matching targets using *orange boxes*.
+- *Selecting* a resource highlights matching targets using *dark green boxes* until the resource is de-selected.
+
+#+BEGIN_tip
+Sequential composition attempts to work *maximally* and connect together as many of the matching resources as possible.
+#+END_tip
+
+For example, consider a process with parallel outputs ~A~ and ~B~, and another process with corresponding parallel inputs ~A~ and ~B~. We can compose them in sequence by selecting the output ~A~ of the first process and right-clicking on the input ~A~ of the other. Even though we selected ~A~ for composition, both ~A~ and ~B~ will be connected in the resulting composite process.
+
+The rationale for this design choice is beyond the scope of this documentation, but we refer the interested reader to the [[https://link.springer.com/chapter/10.1007/978-3-030-13838-7%5F5][relevant publication]].
+
+An example sequential composition, with the orange highlight boxes, is shown below:
+#+hugo: {{< picture "client/Sequence.png" "client/Sequence.png" "an example sequential composition" >}}
+
+*** In Parallel
+
+Composing 2 processes in parallel groups them together in a composite process that executes them both at the same time. The resulting composition has all of the inputs and all of the outputs from both processes.
+
+- This can be accomplished by selecting a blue process box and then right-clicking on a different blue process box.
+
+A triangle ~merge~ node will appear in the composite process in this case.
+
+*** Conditionally
+
+The conditional composition of 2 processes leads to a composite process where only one of the 2 processes will be executed depending on runtime conditions. This type of composition is useful in cases where each of the components of an optional output of a process needs to be handled by a different receiving process.
+
+Which process is executed is dictated by a *new optional input*, using one input from each process. If the first option is provided (at runtime), the first process will be executed, whereas if the second option is provided, the other process will be executed.
+
+- This can be accomplished by seleting an input resource and then right-clicking on an input resource of another process.
+
+At least one diamond ~with~ node will appear in the composite process in this case.
+
+** Store & Verify
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: verify
+   :CUSTOM_ID: verify
+   :EXPORT_HUGO_WEIGHT: 340
+   :END:
+
+*** Store
+
+*Storing* an intermediate composition allows the creation of a new, composite process that can be reused in the same way as atomic processes.
+
+The expectation here is that the user composes processes together using composition actions and generating intermediate compositions. Once they are happy with a particular composition and they want to keep it for further use as a new process, they can store it.
+
+- This can be accomplished by right clicking on an intermediate composition of a workspace in the ~Compositions~ list on the left. Then select the option @@hugo:{{< icon "client/icons/Composite.png" "composite process icon" "inline" >}}@@ ~Store Composition~.
+
+A new window will be opened, showing the graph of the selected composition:
+#+hugo: {{< picture "client/Store.png" "client/Store.png" "the dialog window for storing an intermediate composition" >}}
+
+A new, unique name must be provided for the composite process, following [[#process-names][the same rules and practices as for atomic process naming]].
+
+Clicking on the ~Done~ button at the bottom of the window completes the storage process. The new composite process should appear in the ~Processes~ list on the left.
+
+*** Verify
+
+*Verifying* a process involves sending its specification to the reasoner and verifying its correctness.
+
+There are several options to verify different processes:
+- The @@hugo:{{< icon "client/icons/VerifyAll.png" "verify all icon" "inline" >}}@@ ~Verify All~ icon attempts to verify all atomic and composite processes. This can be particularly useful in a newly opened file.
+- The @@hugo:{{< icon "client/icons/VerifyIntermediates.png" "verify intermediates icon" "inline" >}}@@ ~Verify All Intermediates~ icon attempts to verify all intermediate processes in an active workspace.
+- Right-clicking an atomic or composite process and selecting the @@hugo:{{< icon "client/icons/Verify.png" "verify icon" "inline" >}}@@ ~Verify Process~ option verifies the selected process only.
+- Right-clicking an intermediate composition and selecting the @@hugo:{{< icon "client/icons/Verify.png" "verify icon" "inline" >}}@@ ~Verify Composition~ option verifies the selected composition only.
+- Right-clicking an atomic or composite process or an intermediate composition and selecting the @@hugo:{{< icon "client/icons/VerifyParents.png" "verify process&parents icon" "inline" >}}@@ ~Verify Process&Parents~ option verifies the all of the components of the selected process recursively and then the process itself.
+
+These options allow a step-by-step verification process in case the exact source of an error needs to be identified.
+
+Verification may be required in several situations where a process specification may have changed either directly or indirectly because of another process. Typical examples include:
+- Loading a saved file.
+- Editing or deleting a component atomic process.
+- Replacing/updating a component atomic or composite process.
+
+If there is uncertainty about the correctness of a process, it is marked as ~unchecked~ or ~unverified~. This is indicated by a yellow warning icon as shown below.
+
+If verification of a particular composition fails (for instance because a composition action is no longer possible), the corresponding reasoner error will be displayed and the process will be marked as ~invalid~ with a red icon as shown below.
+
+| Icon                                                                                                            | Decription                         |
+|-----------------------------------------------------------------------------------------------------------------+------------------------------------|
+| @@hugo:{{< icon "client/icons/ProcessWarning.png" "unchecked process icon" "inline" >}}@@                       | Unchecked atomic process           |
+| @@hugo:{{< icon "client/icons/CompositeWarning.png" "unchecked composite process icon" "inline" >}}@@           | Unchecked composite process        |
+| @@hugo:{{< icon "client/icons/IntermediateWarning.png" "unchecked intermediate composition icon" "inline" >}}@@ | Unchecked intermediate composition |
+| @@hugo:{{< icon "client/icons/ProcessInvalid.png" "invalid process icon" "inline" >}}@@                         | Invalid atomic process             |
+| @@hugo:{{< icon "client/icons/CompositeInvalid.png" "invalid composite process icon" "inline" >}}@@             | Invalid composite process          |
+| @@hugo:{{< icon "client/icons/IntermediateInvalid.png" "invalid intermediate compositionicon" "inline" >}}@@    | Invalid intermediate composition   |
+** Deploy
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: deploy
+   :CUSTOM_ID: deploy
+   :EXPORT_HUGO_WEIGHT: 350
+   :END:
+
+The reasoner can automatically generate executable [[https://www.scala-lang.org/][Scala]] code for process compositions, including code templates for the involved resource types and atomic processes.
+
+The code relies on the use of the [[https://github.com/workflowfm/pew][WorkflowFM PEW execution engine]]. 
+
+- This can be accomplished  by *right-clicking* on a composite process and selecting the @@hugo:{{< icon "client/icons/Deploy.png" "deploy icon" "inline" >}}@@ ~Deploy in Scala~ option.
+
+This will open a new window with the appropriate dialog for deploying code. Using the [[#examples][Ski example]], the window is shown below:
+#+hugo: {{< picture "client/SkiDeploy.png" "client/SkiDeploy.png" "the Scala deployment dialog with details for the Ski example" >}}
+
+*** Architecture
+
+*** Project template
+
+*** Configuration
+
+*** Output
+
+** Other
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: other
+   :EXPORT_HUGO_WEIGHT: 390
+   :END:
+
+Some other available functionality is described here.
+
+*** Show Graph
+
+Once a composite process or an intermediate composition is created, its graph can be viewed on a separate window.
+
+- This can be accomplished by *right-clicking* the composition and selecting the @@hugo:{{< icon "client/icons/ShowGraph.png" "show graph icon" "inline" >}}@@ ~Show Graph~ option.
+- The full graph is also shown when hovering above the blue process box of a (collapsed) composite process.
+
+This can be particularly useful for composite processes which appear as a single atomic process in subsequent compositions.
+
+*** Load Compositions
+
+In some cases it may be useful to reload the intermediate (binary) composition steps that we followed when a composite process was stored.
+
+- This can be accomplished by *right-clicking* a composite process and selecting the @@hugo:{{< icon "client/icons/LoadCompositions.png" "load compositions icon" "inline" >}}@@ ~Load Compositions~ option.
+
+This will create a new workspace and add all the composition steps used to create the selected process as intermediate compositions.
+
+This can be particularly useful for example when a composite process has become invalid due to an updated component and you need to adjust the composition actions, or if a similar copy of the same composition is required, but the workspace no longer exists.
+
+
+*** Inspect \pi-calculus
+
+The reasoner automatically produces \pi-calculus specifications of the specified processes. These can be visualized and inspected using the [[http://frapu.de/bpm/piviztool.html][PiVizTool]], which has been directly integrated with the Client.
+
+#+ATTR_SHORTCODE: warning
+#+BEGIN_tip
+The PiVizTool relies on [[https://graphviz.org/][GraphViz]]. The ~dot~ executable must be available in the ~PATH~ for it to function.
+#+END_tip
+
+- This can be accomplished by *right-clicking* the composition and selecting the @@hugo:{{< icon "client/icons/Inspect.png" "inspect pi calculus icon" "inline" >}}@@ ~Inspect pi-calculus~ option.
+
+The graph includes a ~Request~ and a ~Response~ process, which are responsible for the sending the initial inputs and receiving the final outputs respectively.
+
+The visualization is interactive. Resources are communicated between processes by clicking on black edges or using the icons at the top.
+
+Some familiarity with \pi-calculus is required to be able to follow the execution steps.
+
+#+ATTR_SHORTCODE: warning
+#+BEGIN_tip
+The PiVizTool has certain bugs which cause it to fail and give an error despite a valid pi-calculus specification. Unfortunately we have not been able to identify the source or resolve these issues.
+#+END_tip
+
+* Reference
+:PROPERTIES:
+:EXPORT_HUGO_SECTION*: reference
+:END:
+
+** Reference
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: _index
+   :EXPORT_HUGO_WEIGHT: 401
+   :END:
+
+This section covers a reference to all icons, visual elements, examples, and preferences available in the client.
+
+** Examples
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: examples
+   :CUSTOM_ID: examples
+   :EXPORT_HUGO_WEIGHT: 410
+   :END:
+
+
+** Icons
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: icons
+   :EXPORT_HUGO_WEIGHT: 420
+   :END:
+
+** Process graph
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: graph
+   :EXPORT_HUGO_WEIGHT: 430
+   :END:
+
+** Preferences
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: preferences
+   :EXPORT_HUGO_WEIGHT: 490
+   :END:

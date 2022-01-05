@@ -1,13 +1,13 @@
 ---
 title: "Server"
 author: ["Petros Papapanagiotou"]
-lastmod: 2022-01-05T12:26:54+00:00
+lastmod: 2022-01-05T13:47:48+00:00
 type: "docs"
 draft: false
 menu:
   main:
     identifier: "server"
-    weight: 100
+    weight: 10100
 ---
 
 Welcome to the **WorkflowFM Composer Server documentation**.

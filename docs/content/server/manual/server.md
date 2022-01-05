@@ -1,10 +1,10 @@
 ---
 title: "Server"
 author: ["Petros Papapanagiotou"]
-lastmod: 2022-01-05T12:26:56+00:00
+lastmod: 2022-01-05T13:47:51+00:00
 type: "docs"
 draft: false
-weight: 210
+weight: 10210
 ---
 
 The server can be built using [Gradle](https://gradle.org/), which ships with the repository.

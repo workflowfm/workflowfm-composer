@@ -1,10 +1,10 @@
 ---
 title: "Build Image"
 author: ["Petros Papapanagiotou"]
-lastmod: 2022-01-05T12:26:55+00:00
+lastmod: 2022-01-05T13:47:50+00:00
 type: "docs"
 draft: false
-weight: 120
+weight: 10120
 ---
 
 You can build the Docker image yourself from source.

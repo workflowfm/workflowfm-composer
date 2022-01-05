@@ -1,10 +1,10 @@
 ---
 title: "Docker"
 author: ["Petros Papapanagiotou"]
-lastmod: 2022-01-05T12:26:54+00:00
+lastmod: 2022-01-05T13:48:32+00:00
 type: "docs"
 draft: false
-weight: 101
+weight: 10102
 ---
 
 Docker helps automate the deployment of the server and the complexity of the reasoner in particular.
