@@ -1,7 +1,7 @@
 ---
 title: "Build Image"
 author: ["Petros Papapanagiotou"]
-lastmod: 2021-10-18T23:30:38+01:00
+lastmod: 2022-01-05T12:26:55+00:00
 type: "docs"
 draft: false
 weight: 120

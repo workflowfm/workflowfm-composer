@@ -1,7 +1,7 @@
 ---
 title: "Server"
 author: ["Petros Papapanagiotou"]
-lastmod: 2021-10-18T23:36:57+01:00
+lastmod: 2022-01-05T12:26:54+00:00
 type: "docs"
 draft: false
 menu:

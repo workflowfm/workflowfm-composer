@@ -9,7 +9,7 @@
 #+HUGO_BASE_DIR: ../
 #+HUGO_SECTION: server
 #+HUGO_TYPE: docs
-
+#+HUGO_PAIRED_SHORTCODES: tip 
 * Server
   :PROPERTIES:
   :EXPORT_FILE_NAME: _index
@@ -20,9 +20,10 @@ Welcome to the *WorkflowFM Composer Server documentation*.
 
 The Server provides an intermediate layer between the [[http://docs.workflowfm.com/workflowfm-reasoner/][WorkflowFM Reasoner]] and the Client. It exposes a raw socket to allow the client to communicate remotely with the reasoner.
 
-{{< tip warning >}}
+#+ATTR_SHORTCODE: warning
+#+BEGIN_tip
 The server is currently insecure for public use. Avoid deploying it in a public server or outside a firewall.
-{{< /tip >}}
+#+END_tip
 
 The reasoner is based on [[https://github.com/jrh13/hol-light][HOL Light]], which runs on the OCaml toplevel. This makes it difficult to manage in a scalable way and to connect to it remotely or through the web. It also limits its usage to a single user. The server addresses these issues by managing connections through a raw socket and queueing requests to the reasoner.
 
@@ -30,8 +31,7 @@ The server can be deployed either manually or through Docker. Using the [[https:
 
 Once the server is deployed, you can run an connect multiple [[../client][clients]] to it.
 
-
-{{< button "./docker/image/" "Get started" >}}
+#+hugo: {{< button "./docker/image/" "Get started" >}}
 
 * Docker
 :PROPERTIES:
@@ -69,9 +69,9 @@ Once the server is deployed, you can run an connect multiple [[../client][client
    - The name ~workflowfm-server~ is optional and can be changed to whatever you want your server container to be named.
    - The port can also be bound to a different system port, e.g. using ~-p 9000:7000~ to bind it to port ~9000~.
 
-   {{< tip >}}
+   #+begin_tip
    The container may take a few minutes to fully start!
-   {{< /tip >}}
+   #+end_tip
  
    This is because it loads [[https://github.com/workflowfm/hol-light][HOL Light]] and the [[https://github.com/workflowfm/workflowfm-reasoner][WorkflowFM Reasoner]] from scratch. You can follow progress using:
 
@@ -113,9 +113,9 @@ Once the server is deployed, you can run an connect multiple [[../client][client
    - The name ~workflowfm-server~ is optional and can be changed to whatever you want your server container to be named.
    - The port can also be bound to a different system port, e.g. using ~-p 9000:7000~ to bind it to port ~9000~.
 
-   {{< tip >}}
+   #+BEGIN_tip
    The container may take a few minutes to fully start!
-   {{< /tip >}}
+   #+END_tip
  
    This is because it loads [[https://github.com/workflowfm/hol-light][HOL Light]] and the [[https://github.com/workflowfm/workflowfm-reasoner][WorkflowFM Reasoner]] from scratch. You can follow progress using:
 
@@ -125,7 +125,7 @@ Once the server is deployed, you can run an connect multiple [[../client][client
 
 * Manual
 :PROPERTIES:
-:EXPORT_HUGO_SECTION*: build
+:EXPORT_HUGO_SECTION*: manual
 :END:
 
 ** Manual Build
@@ -136,7 +136,7 @@ Once the server is deployed, you can run an connect multiple [[../client][client
 
    A manual build is also possible, albeit more tedious.
 
-   It requires a local installation of the WorkflowFM Reasoner, in addition to building and running the server itself.
+   It requires a local installation of the [[https://github.com/workflowfm/workflowfm-reasoner][WorkflowFM Reasoner]], in addition to building and running the server itself.
 
 ** Server
    :PROPERTIES:
@@ -151,9 +151,9 @@ Once the server is deployed, you can run an connect multiple [[../client][client
    - Linux: ~./gradlew~
    - Windows: ~gradlew.bat~
 
-   {{< tip >}} 
+   #+BEGIN_tip 
    Building requires *JDK 11* or above.
-   {{< /tip >}}
+   #+END_tip
    
    The server can be compiled and packaged with a single command:
    #+BEGIN_SRC sh
@@ -171,7 +171,7 @@ Once the server is deployed, you can run an connect multiple [[../client][client
    :END:
 *** Installation
 
-    The WorkflowFM Reasoner can be installed following the [[http://docs.workflowfm.com/workflowfm-reasoner/docs/install/][instructions in its documentation]].
+    The [[https://github.com/workflowfm/workflowfm-reasoner][WorkflowFM Reasoner]] can be installed following the [[http://docs.workflowfm.com/workflowfm-reasoner/docs/install/][instructions in its documentation]].
 
     The involved ~hol-light~ repository can already be found as a submodule under ~server/hol-light~.
 
@@ -184,16 +184,23 @@ Once the server is deployed, you can run an connect multiple [[../client][client
 
     Once the reasoner is installed and working, we need to build a script that runs the reasoner and pipes the input/output to the server.
 
-    The ~scripts/~ directory contains a couple of bash scripts that can achieve this. Both scripts assume that the reasoner is installed in a ~hol-light/~ directory within the server installation. If that is not the case, this can be adjusted bya simole symbolic link:
+    The ~scripts/~ directory contains bash scripts that can help achieve this. Both scripts assume that the reasoner is installed in a ~hol-light/~ directory within the server installation. If that is not the case, this can be adjusted using a symbolic link:
 
     #+BEGIN_SRC sh
       ln -s full/path/to/reasoner hol-light
     #+END_SRC
 
-    - If checkpointing (dmtcp) was used, the reasoner can run using ~scripts/launch_dmtcp_local.sh~.
-    - If checkpointing is *not* available, you can use ~scripts/launch_prover_local.sh~ which will load HOL Light and the reasoner from scratch.
+    - If checkpointing (dmtcp) was used, the reasoner can run using ~./scripts/launch_prover_local.sh~.
+    - If checkpointing is *not* available, you can use ~./scripts/launch_prover_docker.sh~ which is what the Docker build uses to load HOL Light and the reasoner from scratch.
+    - You can also run the reasoner on a remote machine using an ssh tunnel. This assumes an installation of the server /and/ the reasoner on that machine, the use of checkpointing, and password-less ssh access to the remote machine. In that case you can use ~./scrips/setup_remote_prover.sh~ to create a remote launch script (~./scripts/launch_prover.sh~), using the url of the remote machine and the absolute path to the installation of the reasoner:
+      #+BEGIN_SRC sh
+        ./scripts/setup_remote_prover.sh someuser@host.of.reasoner.com /home/someuser/workflowfm-server/scripts/launch_prover_local.sh
+      #+END_SRC
 
-      Make sure you run the corresponding script and verify it does load the reasoner correctly and without errors.
+      Make sure you run the corresponding script and verify it does load the reasoner correctly and without errors. The reasoner should run through the script and allow you to issue OCaml toplevel commands. It should react (and exit) if you provide the following command:
+      #+BEGIN_SRC ocaml
+        exit(0);;
+      #+END_SRC
 
 ** Run
    :PROPERTIES:

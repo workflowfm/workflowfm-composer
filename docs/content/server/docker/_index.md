@@ -1,7 +1,7 @@
 ---
 title: "Docker"
 author: ["Petros Papapanagiotou"]
-lastmod: 2021-10-18T23:30:35+01:00
+lastmod: 2022-01-05T12:26:54+00:00
 type: "docs"
 draft: false
 weight: 101
