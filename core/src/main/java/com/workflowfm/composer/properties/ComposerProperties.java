@@ -80,7 +80,7 @@ public class ComposerProperties {
 	
 	
 	public static int processNodeWidth() { return prefs.getInt("processNodeWidth", 120); } 
-	public static int processNodeHeight() { return prefs.getInt("processNodeWidth", 40); }
+	public static int processNodeHeight() { return prefs.getInt("processNodeHeight", 40); }
 	public static int processCopierNodeRadius() { return prefs.getInt("processCopierNodeRadius", 15); }
 	
 	public static boolean processNodeAutoResize() { return prefs.getBoolean("processNodeAutoResize", true); }
