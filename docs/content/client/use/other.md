@@ -1,7 +1,7 @@
 ---
 title: "Other"
 author: ["Petros Papapanagiotou"]
-lastmod: 2022-01-05T20:46:57+00:00
+lastmod: 2022-01-06T09:19:45+00:00
 type: "docs"
 draft: false
 weight: 390
@@ -42,6 +42,10 @@ The PiVizTool relies on [GraphViz](https://graphviz.org/). The `dot` executable 
 -   This can be accomplished by **right-clicking** the composition and selecting the {{< icon "client/icons/Inspect.png" "inspect pi calculus icon" "inline" >}} `Inspect pi-calculus` option.
 
 The graph includes a `Request` and a `Response` process, which are responsible for the sending the initial inputs and receiving the final outputs respectively.
+
+Using the [Ski example]({{< relref "examples" >}}), the PiVizTool window is shown below:
+
+{{< picture "client/SkiPi.png" "client/SkiPi.png" "the PiVizTool window with a visualization of the Ski example" >}}
 
 The visualization is interactive. Resources are communicated between processes by clicking on black edges or using the icons at the top.
 

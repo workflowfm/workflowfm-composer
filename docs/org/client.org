@@ -479,6 +479,9 @@ The PiVizTool relies on [[https://graphviz.org/][GraphViz]]. The ~dot~ executabl
 
 The graph includes a ~Request~ and a ~Response~ process, which are responsible for the sending the initial inputs and receiving the final outputs respectively.
 
+ Using the [[#examples][Ski example]], the PiVizTool window is shown below:
+#+hugo: {{< picture "client/SkiPi.png" "client/SkiPi.png" "the PiVizTool window with a visualization of the Ski example" >}}
+
 The visualization is interactive. Resources are communicated between processes by clicking on black edges or using the icons at the top.
 
 Some familiarity with \pi-calculus is required to be able to follow the execution steps.
