@@ -1,7 +1,7 @@
 ---
 title: "Compose"
 author: ["Petros Papapanagiotou"]
-lastmod: 2022-01-05T20:46:56+00:00
+lastmod: 2022-01-06T19:51:31+00:00
 type: "docs"
 draft: false
 weight: 330
@@ -63,7 +63,7 @@ Composing 2 processes in parallel groups them together in a composite process th
 
 -   This can be accomplished by selecting a blue process box and then right-clicking on a different blue process box.
 
-A triangle `merge` node will appear in the composite process in this case.
+A triangle `join` node will appear in the composite process in this case.
 
 
 ## Conditionally {#conditionally}

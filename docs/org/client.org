@@ -28,7 +28,7 @@ The Client requires a running instance of the [[../server][Server]].
 It allows the specification of processes using their input and output resources. Processes can then be composed together with simple mouse gestures. Every composition action is sent to the reasoner, via the server, and then performed using logic-based reasoning so that the result is formally verified.
 
 #+BEGIN_tip
-User preferences are stored in the user's home directory, under ~.workflowfm/~.
+Configuration values are stored in the user's home directory, under ~.workflowfm/~.
 #+END_tip
 
 
@@ -297,7 +297,7 @@ Composing 2 processes in parallel groups them together in a composite process th
 
 - This can be accomplished by selecting a blue process box and then right-clicking on a different blue process box.
 
-A triangle ~merge~ node will appear in the composite process in this case.
+A triangle ~join~ node will appear in the composite process in this case.
 
 *** Conditionally
 
@@ -502,7 +502,7 @@ The PiVizTool has certain bugs which cause it to fail and give an error despite 
    :EXPORT_HUGO_WEIGHT: 401
    :END:
 
-This section covers a reference to all icons, visual elements, examples, and preferences available in the client.
+This section covers a reference to elements of the client, including examples, graph elements, and configuration values.
 
 ** Examples
    :PROPERTIES:
@@ -511,21 +511,101 @@ This section covers a reference to all icons, visual elements, examples, and pre
    :EXPORT_HUGO_WEIGHT: 410
    :END:
 
+   A list of examples is available in the default installation of the client. You can inspect them by loading the corresponding file, verifying all processes and compositions and viewing their graphs.
 
-** Icons
+   The following examples are included:
+
+    1. ~SimpleCopyAndSequence.json~: Simple example demonstrating the copy node and 2 separate methods of serial sequential composition. Inspection of the graph and underlying \pi-calculus structure shows the difference between composing right-to-left (simpler structure) and left-to-right (introduces axiom buffers).
+
+    2. ~SimpleOptionalTreatment.json~: Simple healthcare-inspired example demonstrating resource accounting when handling optional/exceptional outcomes as presented in: 
+       - /[[https://link.springer.com/chapter/10.1007/978-3-030-13838-7%5F5][A Pragmatic, Scalable Approach to Correct-by-construction Process Composition Using Classical Linear Logic Inference]]/
+
+    3. ~BuySki.json~: Example of a workflow for buying Ski equipment as presented in:
+       - /[[https://arxiv.org/abs/1108.2348][A theorem proving framework for the formal verification of Web Services Composition]]/
+
+    4. ~HomePurchase.json~: Example of a workflow for purchasing property as presented in:
+       - /[[https://ieeexplore.ieee.org/document/6061099][Formal verification of Web Services composition using linear logic and the pi-calculus]]/
+
+    5. ~HealthcareHandover.json~: Example of 2 patient handover workflows via assignment and delegation, as presented in:
+       - /[[https://www.tandfonline.com/doi/abs/10.1080/0144929X.2013.824506][Formal verification of collaboration patterns in healthcare]]/
+       - /[[https://ieeexplore.ieee.org/document/6266330][Rigorous process-based modelling of patterns for collaborative work in healthcare teams]]/
+
+
+** Icons :noexport:
    :PROPERTIES:
    :EXPORT_FILE_NAME: icons
    :EXPORT_HUGO_WEIGHT: 420
    :END:
 
-** Process graph
+** Graph elements
    :PROPERTIES:
    :EXPORT_FILE_NAME: graph
    :EXPORT_HUGO_WEIGHT: 430
    :END:
 
-** Preferences
+   The following is a complete list of the visual elements, including nodes (vertices) and edges, that can be encountered in a process graph.
+   
+*** Vertices
+    | Name              | Visual                                                                                                                                           | Description                                                                                                                                             |
+    |-------------------+--------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------|
+    | Resource          | @@hugo:{{< picture "client/graph/Resource.png" "client/graph/Resource.png" "a small light blue circle" >}}@@                                     | An input or output resource.                                                                                                                            |
+    | Atomic Process    | @@hugo:{{< picture "client/graph/Process.png" "client/graph/Process.png" "a light blue, rounded rectangle" >}}@@                                 | An atomic process.                                                                                                                                      |
+    | Composite Process | @@hugo:{{< picture "client/graph/Composite.png" "client/graph/Composite.png" "a dark blue, rounded rectangle" >}}@@                              | A composite process.                                                                                                                                    |
+    | Copy node         | @@hugo:{{< picture "client/graph/Copy.png" "client/graph/Copy.png" "a large, light blue circle with a black circled X in the middle" >}}@@       | A process with a single input and multiple parallel outputs of the same type is assumed to be a /copy/ process that makes multiple copies of its input. |
+    | Join node         | @@hugo:{{< picture "client/graph/Join.png" "client/graph/Join.png" "a light blue triangle pointing right" >}}@@                                  | A special node used when the output of a composite process does not have a single or clear source.                                                      |
+    | Merge node        | @@hugo:{{< picture "client/graph/With.png" "client/graph/With.png" "a light blue diamond with a black ampersand in the middle" >}}@@ | A special node used when an /optional/ input/output combines resources from multiple component processes.                                                 |
+
+*** Edges
+
+    Edges can be solid or dashed as shown below:
+    #+hugo: {{< picture "client/graph/Edges.png" "client/graph/Edges.png" "one solid and one dashed grey arrow pointing to the right" >}}
+
+    Dashed edges are used to indicate that the corresponding resource (or group of resources) is /optional/, i.e. part of an optional tree of resources where only one of the branches can be provided.
+
+** Configuration
    :PROPERTIES:
-   :EXPORT_FILE_NAME: preferences
+   :EXPORT_FILE_NAME: configuration
    :EXPORT_HUGO_WEIGHT: 490
    :END:
+
+   Configuration values are stored in a ~.workflowfm~ directory at the user's home directory, defaulting in the ~composer.properties~ file. 
+
+   It is *not* necessary to explicitly set any of these configuration parameters, but it is possible to tweak the behaviour of the client in some ways if desired.
+
+   - You can manually set parameters in the configuration file following the standard [[https://en.wikipedia.org/wiki/.properties][.properties file format]], ~variable = value~.
+   - You can also create a custom property file to be used instead of the default file. Simply pass the file path as an argument when starting the client.
+
+   Some values may be changed through the use of the interface and will be overwritten in the file. These are marked in the /Auto/ column below.
+
+   | Parameter name            | Type                   | Description                                                                      | Default                  | Auto                                                      |
+   |---------------------------+------------------------+----------------------------------------------------------------------------------+--------------------------+-----------------------------------------------------------|
+   | ~processNodeWidth~        | Integer                | The pixel width of the process vertex.                                           | 120                      | *                                                         |
+   | ~processNodeHeight~       | Integer                | The pixel height of the process vertex.                                          | 40                       |                                                           |
+   | ~processNodeAutoResize~   | Boolean                | If ~true~ the width of process vertices is resized to fit their label.           | true                     |                                                           |
+   | ~processCopierNodeRadius~ | Integer                | The pixel radius of the copier node vertex.                                      | 15                       |                                                           |
+   | ~interHierarcySpacing~    | Integer                | The vertical distance between 2 separate process graphs.                         | 40                       |                                                           |
+   | ~interRankCellSpacing~    | Integer                | The horizontal distance between 2 vertices of the same process graph.            | 110                      |                                                           |
+   | ~atomicProcessColour~     | String (hex colour)    | The colour of an atomic process vertex.                                          | #BBDEFB                  |                                                           |
+   | ~compositeProcessColour~  | String (hex colour)    | The colour of a composite process vertex.                                        | #64B5F6                  |                                                           |
+   | ~portEdgeColour~          | String (hex colour)    | The colour of a resource vertex.                                                 | ~atomicProcessColour~    |                                                           |
+   | ~edgeColour~              | String (hex colour)    | The colour of a solid edge.                                                      | #686868                  |                                                           |
+   | ~bufferColour~            | String (hex colour)    | The colour of a buffer edge**.                                                   | #686868                  |                                                           |
+   | ~hoverHighlightColour~    | String (hex colour)    | The colour used to highlight matching resource vertices when hovering above one. | #F78400                  |                                                           |
+   | ~selectHighlightColour~   | String (hex colour)    | The colour used to highlight selected vertices.                                  | #33691E                  |                                                           |
+   | ~proofScriptDirectory~    | String (directory)     | The default directory for opening files.                                         | ~./proofs/~              | @@hugo:{{< icon "checkmark.png" "a green checkmark" >}}@@ |
+   | ~imageDirectory~          | String (directory)     | The default directory for storing screenshots.                                   | ~proofScriptDirectory~   | @@hugo:{{< icon "checkmark.png" "a green checkmark" >}}@@ |
+   | ~frameWidth~              | Integer                | The width of the UI window. (Attempts to resize to that on start.)               | 1000                     | @@hugo:{{< icon "checkmark.png" "a green checkmark" >}}@@ |
+   | ~frameHeight~             | Integer                | The height of the UI window. (Attempts to resize to that on start.)              | 1000                     | @@hugo:{{< icon "checkmark.png" "a green checkmark" >}}@@ |
+   | ~deployStateful~          | Boolean                | The default value of the corresponding tick box in the [[#deploy][deployment dialog]].        | true                     | @@hugo:{{< icon "checkmark.png" "a green checkmark" >}}@@ |
+   | ~deployMain~              | Boolean                | The default value of the corresponding tick box in the [[#deploy][deployment dialog]].        | true                     | @@hugo:{{< icon "checkmark.png" "a green checkmark" >}}@@ |
+   | ~projectName~             | String                 | The last used project name in the [[#deploy][deployment dialog]].                             |                          | @@hugo:{{< icon "checkmark.png" "a green checkmark" >}}@@ |
+   | ~deployPackageName~       | String (Scala package) | The last used package name in the [[#deploy][deployment dialog]].                             | ~com.workflowfm.project~ | @@hugo:{{< icon "checkmark.png" "a green checkmark" >}}@@ |
+   | ~deployFolder~            | String (directory)     | The last used target directory in the [[#deploy][deployment dialog]].                         | ~./~                     | @@hugo:{{< icon "checkmark.png" "a green checkmark" >}}@@ |
+   | ~server~                  | String (host/IP)       | The last used server host/IP.                                                    | ~localhost~              | @@hugo:{{< icon "checkmark.png" "a green checkmark" >}}@@ |
+   | ~port~                    | Integer (port)         | The last used server port.                                                       | 7000                     | @@hugo:{{< icon "checkmark.png" "a green checkmark" >}}@@ |
+   | ~serverMaxAttempts~       | Integer                | The maximum number of attempts to reconnect to the server upon failure.          | 10                       |                                                           |
+
+   
+   - * The value ~processNodeWidth~ is unimportant if ~processNodeAutoResize~ is ~true~.
+   - ** /Buffer edges/ were originally used to represent resources that are not directly connected to a process, but go through the so-called /axiom buffers/. In more recent versions of the system, we considered this information more confusing than helpful, so we use the same colour for those edges. Moreover, the algorithm that determines which resources are buffered is not always accurate. Because of this, the value ~bufferColour~ will be deprecated in future versions.
+     The value of ~bufferColour~  should normally be the set to be the same as ~edgeColour~.
