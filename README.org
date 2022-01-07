@@ -2,7 +2,7 @@
 #+AUTHOR: Petros Papapanagiotou
 
 #+ATTR_ORG: :width 100
-[[https://raw.githubusercontent.com/workflowfm/workflowfm-composer/docs/docs/static/images/WorkflowFM-Composer.png]]
+[[https://raw.githubusercontent.com/workflowfm/workflowfm-composer/main/docs/static/images/WorkflowFM-Composer.png]]
 
 [[../../releases/latest][https://img.shields.io/badge/version-0.7.2h-brightgreen.svg]]
 [[https://opensource.org/licenses/Apache-2.0][https://img.shields.io/badge/license-Apache%202.0-yellowgreen.svg]]
