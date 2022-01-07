@@ -17,3 +17,16 @@ pre.chroma code {
 strong {
     font-weight: 900;
 }
+
+.icon_inline {
+    display: inline;
+}
+
+.icon_inline img.icon {
+    display: inline-block;
+    margin: 0;
+}
+
+.menu h3 {
+    padding-left: 5px;
+}
