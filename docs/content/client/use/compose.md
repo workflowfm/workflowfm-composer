@@ -1,7 +1,7 @@
 ---
 title: "Compose"
 author: ["Petros Papapanagiotou"]
-lastmod: 2022-01-06T19:51:31+00:00
+lastmod: 2022-01-07T12:07:07+00:00
 type: "docs"
 draft: false
 weight: 330
@@ -10,7 +10,7 @@ weight: 330
 Composition involves the combination of 2 processes (_binary compositions_) in a single composite process.
 
 -   This requires an active `Workspace`. A new workspace can be created using the {{< icon "client/icons/CreateWorkspace.png" "create workspace icon" "inline" >}} `Create Workspace` icon.
--   Processes can be added to the workspace by **double-clicking** them in the `Processes` list on the left or by **right-clicking** them and selecting the {{< icon "client/icons/Add.png" "add icon" "inline" >}} `Add Graph` option.
+-   Processes can be added to the workspace by **double-clicking** them in the `Processes` list on the left or by **right-clicking** them and selecting the {{< icon "client/icons/AddGraph.png" "add icon" "inline" >}} `Add Graph` option.
 
 Once added, processes can be composed together in 3 ways:
 
@@ -18,7 +18,7 @@ Once added, processes can be composed together in 3 ways:
 2.  **In parallel**
 3.  **Conditionally**
 
-All composition actions are performed in **\*2 steps**: **first select (left-click)** on an element **and then right-click** on a target element to compose them together. The selection is different for each action, as described below.
+All composition actions are performed in **2 steps**: **first select (left-click)** on an element **and then right-click** on a target element to compose them together. The selection is different for each action, as described below.
 
 Each time a composition action is performed successfully, a new _intermediate_ composition is created and listed in the `Compositions` list on the left.
 
@@ -26,7 +26,7 @@ Each time a composition action is performed successfully, a new _intermediate_ c
 Each workspace has its own `Compositions` list. Make sure you have an active workspace to view its list. You may need to drag and resize the list using the bar at the bottom of the `Processes` list to make it visible.
 {{< /tip >}}
 
-Intermediate compositions are named automatically as `_Step#` using a unique number (With separate counting for each workspace). These can be used as components in further composition actions. They cannot be renamed, but they can be [stored as new processes]({{< relref "verify" >}}).
+Intermediate compositions are named automatically as `_Step#` using a unique number (wHith separate counting for each workspace). These can be used as components in further composition actions. They cannot be renamed, but they can be [stored as new processes]({{< relref "verify" >}}).
 
 In some cases and due to certain design decisions (some of which are mentioned below), the result of a composition action may seem bizarre or unexpected. However, every composition action is performed using **formal, logic-based reasoning** and is guaranteed to be correct.
 
@@ -63,7 +63,7 @@ Composing 2 processes in parallel groups them together in a composite process th
 
 -   This can be accomplished by selecting a blue process box and then right-clicking on a different blue process box.
 
-A triangle `join` node will appear in the composite process in this case.
+A [triangle `join` node]({{< relref "graph" >}}) will appear in the composite process in this case.
 
 
 ## Conditionally {#conditionally}
@@ -74,4 +74,4 @@ Which process is executed is dictated by a **new optional input**, using one inp
 
 -   This can be accomplished by seleting an input resource and then right-clicking on an input resource of another process.
 
-At least one diamond `with` node will appear in the composite process in this case.
+One or more [diamond `with` nodes]({{< relref "graph" >}}) may appear in the composite process in this case.

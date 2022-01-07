@@ -1,7 +1,7 @@
 ---
 title: "Other"
 author: ["Petros Papapanagiotou"]
-lastmod: 2022-01-06T09:19:45+00:00
+lastmod: 2022-01-07T12:07:09+00:00
 type: "docs"
 draft: false
 weight: 390
@@ -52,5 +52,5 @@ The visualization is interactive. Resources are communicated between processes b
 Some familiarity with &pi;-calculus is required to be able to follow the execution steps.
 
 {{< tip warning >}}
-The PiVizTool has certain bugs which cause it to fail and give an error despite a valid pi-calculus specification. Unfortunately we have not been able to identify the source or resolve these issues.
+The PiVizTool has certain bugs which sometimes cause it to fail and give an error despite a valid pi-calculus specification. Unfortunately we have not been able to identify the source or resolve these issues.
 {{< /tip >}}

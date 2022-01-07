@@ -1,7 +1,7 @@
 ---
 title: "Store & Verify"
 author: ["Petros Papapanagiotou"]
-lastmod: 2022-01-05T20:46:56+00:00
+lastmod: 2022-01-07T12:07:08+00:00
 type: "docs"
 draft: false
 weight: 340
@@ -34,7 +34,7 @@ There are several options to verify different processes:
 -   The {{< icon "client/icons/VerifyIntermediates.png" "verify intermediates icon" "inline" >}} `Verify All Intermediates` icon attempts to verify all intermediate processes in an active workspace.
 -   Right-clicking an atomic or composite process and selecting the {{< icon "client/icons/Verify.png" "verify icon" "inline" >}} `Verify Process` option verifies the selected process only.
 -   Right-clicking an intermediate composition and selecting the {{< icon "client/icons/Verify.png" "verify icon" "inline" >}} `Verify Composition` option verifies the selected composition only.
--   Right-clicking an atomic or composite process or an intermediate composition and selecting the {{< icon "client/icons/VerifyParents.png" "verify process&parents icon" "inline" >}} `Verify Process&Parents` option verifies the all of the components of the selected process recursively and then the process itself.
+-   Right-clicking an atomic or composite process or an intermediate composition and selecting the {{< icon "client/icons/VerifyParents.png" "verify process&parents icon" "inline" >}} `Verify Process&Parents` option verifies all of the components of the selected process recursively and then the process itself.
 
 These options allow a step-by-step verification process in case the exact source of an error needs to be identified.
 

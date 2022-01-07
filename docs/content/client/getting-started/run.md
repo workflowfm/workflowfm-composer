@@ -1,7 +1,7 @@
 ---
 title: "Run"
 author: ["Petros Papapanagiotou"]
-lastmod: 2022-01-05T20:46:55+00:00
+lastmod: 2022-01-07T12:07:05+00:00
 type: "docs"
 draft: false
 weight: 120

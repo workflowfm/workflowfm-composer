@@ -1,7 +1,7 @@
 ---
 title: "Graph elements"
 author: ["Petros Papapanagiotou"]
-lastmod: 2022-01-06T19:51:35+00:00
+lastmod: 2022-01-07T12:07:11+00:00
 type: "docs"
 draft: false
 weight: 430

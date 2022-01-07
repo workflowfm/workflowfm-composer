@@ -55,7 +55,7 @@ Once the server is deployed, you can run an connect multiple [[../client][client
    :EXPORT_HUGO_WEIGHT: 10110
    :END:
 
-   The easiest setup is to use the latest available [[https://github.com/workflowfm/workflowfm-composer/pkgs/container/composer-server][Docker image]].
+   The easiest setup of the server is using the latest available [[https://github.com/workflowfm/workflowfm-composer/pkgs/container/composer-server][Docker image]].
 
    Pull the image using:
    #+BEGIN_SRC sh

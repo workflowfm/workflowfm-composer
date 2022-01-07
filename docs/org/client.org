@@ -25,10 +25,10 @@ The Client provides a Java-based Graphical User Interface or formally verified p
 The Client requires a running instance of the [[../server][Server]].
 #+END_tip
 
-It allows the specification of processes using their input and output resources. Processes can then be composed together with simple mouse gestures. Every composition action is sent to the reasoner, via the server, and then performed using logic-based reasoning so that the result is formally verified.
+It allows the specification of processes using their *input and output resources*. Processes can then be composed together with simple mouse gestures. Every composition action is sent to the reasoner, via the server, and then performed using logic-based reasoning so that the result is formally verified.
 
 #+BEGIN_tip
-Configuration values are stored in the user's home directory, under ~.workflowfm/~.
+[[#configuration][Configuration values]] are stored in the user's home directory, under ~.workflowfm/~.
 #+END_tip
 
 
@@ -81,9 +81,9 @@ The client can be compiled and packaged with a single command:
   gradle :client:distZip
 #+END_SRC
 
-This will create the file ~client/build/distributions/WorkflowFM_Composer-{VERSION}.zip~. 
+This will create the file ~client/build/distributions/WorkflowFM_Composer-@@.zip~. 
 
-Unzip it to your favourite location to obtained a client installation.
+Unzip it to your favourite location to obtain a client installation.
 
 
 
@@ -220,6 +220,10 @@ Both input and output resources can be added as branches in a tree-like structur
 
 We can specify branches of both parallel (solid lines) and optional (dashed lines) resources. 
 
+#+BEGIN_tip
+Optional resources are exclusively so, meaning that only one of the optional branches will be provided at runtime.
+#+END_tip
+
 - *Double-clicking* on a blue resource circle adds a new resource *at the same level and branch type as the circle*. 
 
    /For example, if a circle belongs to an optional branch (dashed line), double clicking it will produce a new option from the same root as the circle./
@@ -247,7 +251,7 @@ We can specify branches of both parallel (solid lines) and optional (dashed line
 Composition involves the combination of 2 processes (/binary compositions/) in a single composite process.
 
 - This requires an active ~Workspace~. A new workspace can be created using the @@hugo:{{< icon "client/icons/CreateWorkspace.png" "create workspace icon" "inline" >}}@@ ~Create Workspace~ icon.
-- Processes can be added to the workspace by *double-clicking* them in the ~Processes~ list on the left or by *right-clicking* them and selecting the @@hugo:{{< icon "client/icons/Add.png" "add icon" "inline" >}}@@ ~Add Graph~ option.
+- Processes can be added to the workspace by *double-clicking* them in the ~Processes~ list on the left or by *right-clicking* them and selecting the @@hugo:{{< icon "client/icons/AddGraph.png" "add icon" "inline" >}}@@ ~Add Graph~ option.
 
 Once added, processes can be composed together in 3 ways:
 
@@ -256,7 +260,7 @@ Once added, processes can be composed together in 3 ways:
 3. *Conditionally*
 
 
-All composition actions are performed in **2 steps*: *first select (left-click)* on an element *and then right-click* on a target element to compose them together. The selection is different for each action, as described below.
+All composition actions are performed in *2 steps*: *first select (left-click)* on an element *and then right-click* on a target element to compose them together. The selection is different for each action, as described below.
 
 Each time a composition action is performed successfully, a new /intermediate/ composition is created and listed in the ~Compositions~ list on the left.
 
@@ -264,7 +268,7 @@ Each time a composition action is performed successfully, a new /intermediate/ c
 Each workspace has its own ~Compositions~ list. Make sure you have an active workspace to view its list. You may need to drag and resize the list using the bar at the bottom of the ~Processes~ list to make it visible.
 #+END_tip
 
-Intermediate compositions are named automatically as ~_Step#~ using a unique number (With separate counting for each workspace). These can be used as components in further composition actions. They cannot be renamed, but they can be [[#verify][stored as new processes]]. 
+Intermediate compositions are named automatically as ~_Step#~ using a unique number (wHith separate counting for each workspace). These can be used as components in further composition actions. They cannot be renamed, but they can be [[#verify][stored as new processes]]. 
 
 In some cases and due to certain design decisions (some of which are mentioned below), the result of a composition action may seem bizarre or unexpected. However, every composition action is performed using *formal, logic-based reasoning* and is guaranteed to be correct. 
 
@@ -297,7 +301,7 @@ Composing 2 processes in parallel groups them together in a composite process th
 
 - This can be accomplished by selecting a blue process box and then right-clicking on a different blue process box.
 
-A triangle ~join~ node will appear in the composite process in this case.
+A [[#graph][triangle ~join~ node]] will appear in the composite process in this case.
 
 *** Conditionally
 
@@ -307,7 +311,7 @@ Which process is executed is dictated by a *new optional input*, using one input
 
 - This can be accomplished by seleting an input resource and then right-clicking on an input resource of another process.
 
-At least one diamond ~with~ node will appear in the composite process in this case.
+One or more [[#graph][diamond ~with~ nodes]] may appear in the composite process in this case.
 
 ** Store & Verify
    :PROPERTIES:
@@ -340,7 +344,7 @@ There are several options to verify different processes:
 - The @@hugo:{{< icon "client/icons/VerifyIntermediates.png" "verify intermediates icon" "inline" >}}@@ ~Verify All Intermediates~ icon attempts to verify all intermediate processes in an active workspace.
 - Right-clicking an atomic or composite process and selecting the @@hugo:{{< icon "client/icons/Verify.png" "verify icon" "inline" >}}@@ ~Verify Process~ option verifies the selected process only.
 - Right-clicking an intermediate composition and selecting the @@hugo:{{< icon "client/icons/Verify.png" "verify icon" "inline" >}}@@ ~Verify Composition~ option verifies the selected composition only.
-- Right-clicking an atomic or composite process or an intermediate composition and selecting the @@hugo:{{< icon "client/icons/VerifyParents.png" "verify process&parents icon" "inline" >}}@@ ~Verify Process&Parents~ option verifies the all of the components of the selected process recursively and then the process itself.
+- Right-clicking an atomic or composite process or an intermediate composition and selecting the @@hugo:{{< icon "client/icons/VerifyParents.png" "verify process&parents icon" "inline" >}}@@ ~Verify Process&Parents~ option verifies all of the components of the selected process recursively and then the process itself.
 
 These options allow a step-by-step verification process in case the exact source of an error needs to be identified.
 
@@ -425,7 +429,7 @@ The deployment dialog requires the following configuration options:
 Once all the desired options are in, click on the ~Done~ button at the bottom of the window to start the deployment.
 
 #+BEGIN_tip
-Deployment of multiple compositions is not explicitly supported. However, it is safe to deploy more than one composition with the same option. Take must taken to ensure all resource types are instantiated. Uninstantiated types will be detected by the Scala compiler. We have plans to support larger and more complex deployments in future versions.
+Deployment of multiple compositions is not explicitly supported. However, it is safe to deploy more than one composition with the same option. Care must taken to ensure all resource types are instantiated. Uninstantiated types will be detected by the Scala compiler. We have plans to support larger and more complex deployments in future versions.
 #+END_tip
 
 *** Output
@@ -488,7 +492,7 @@ Some familiarity with \pi-calculus is required to be able to follow the executio
 
 #+ATTR_SHORTCODE: warning
 #+BEGIN_tip
-The PiVizTool has certain bugs which cause it to fail and give an error despite a valid pi-calculus specification. Unfortunately we have not been able to identify the source or resolve these issues.
+The PiVizTool has certain bugs which sometimes cause it to fail and give an error despite a valid pi-calculus specification. Unfortunately we have not been able to identify the source or resolve these issues.
 #+END_tip
 
 * Reference
@@ -540,6 +544,7 @@ This section covers a reference to elements of the client, including examples, g
 ** Graph elements
    :PROPERTIES:
    :EXPORT_FILE_NAME: graph
+   :CUSTOM_ID: graph
    :EXPORT_HUGO_WEIGHT: 430
    :END:
 
@@ -565,6 +570,7 @@ This section covers a reference to elements of the client, including examples, g
 ** Configuration
    :PROPERTIES:
    :EXPORT_FILE_NAME: configuration
+   :CUSTOM_ID: configuration
    :EXPORT_HUGO_WEIGHT: 490
    :END:
 
@@ -579,7 +585,7 @@ This section covers a reference to elements of the client, including examples, g
 
    | Parameter name            | Type                   | Description                                                                      | Default                  | Auto                                                      |
    |---------------------------+------------------------+----------------------------------------------------------------------------------+--------------------------+-----------------------------------------------------------|
-   | ~processNodeWidth~        | Integer                | The pixel width of the process vertex.                                           | 120                      | *                                                         |
+   | ~processNodeWidth~ *      | Integer                | The pixel width of the process vertex.                                           | 120                      |                                                           |
    | ~processNodeHeight~       | Integer                | The pixel height of the process vertex.                                          | 40                       |                                                           |
    | ~processNodeAutoResize~   | Boolean                | If ~true~ the width of process vertices is resized to fit their label.           | true                     |                                                           |
    | ~processCopierNodeRadius~ | Integer                | The pixel radius of the copier node vertex.                                      | 15                       |                                                           |
@@ -589,7 +595,7 @@ This section covers a reference to elements of the client, including examples, g
    | ~compositeProcessColour~  | String (hex colour)    | The colour of a composite process vertex.                                        | #64B5F6                  |                                                           |
    | ~portEdgeColour~          | String (hex colour)    | The colour of a resource vertex.                                                 | ~atomicProcessColour~    |                                                           |
    | ~edgeColour~              | String (hex colour)    | The colour of a solid edge.                                                      | #686868                  |                                                           |
-   | ~bufferColour~            | String (hex colour)    | The colour of a buffer edge**.                                                   | #686868                  |                                                           |
+   | ~bufferColour~ **         | String (hex colour)    | The colour of a buffer edge.                                                   | #686868                  |                                                           |
    | ~hoverHighlightColour~    | String (hex colour)    | The colour used to highlight matching resource vertices when hovering above one. | #F78400                  |                                                           |
    | ~selectHighlightColour~   | String (hex colour)    | The colour used to highlight selected vertices.                                  | #33691E                  |                                                           |
    | ~proofScriptDirectory~    | String (directory)     | The default directory for opening files.                                         | ~./proofs/~              | @@hugo:{{< icon "checkmark.png" "a green checkmark" >}}@@ |

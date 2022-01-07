@@ -1,7 +1,7 @@
 ---
 title: "Install"
 author: ["Petros Papapanagiotou"]
-lastmod: 2022-01-05T20:46:54+00:00
+lastmod: 2022-01-07T12:07:04+00:00
 type: "docs"
 draft: false
 weight: 110
@@ -35,6 +35,6 @@ The client can be compiled and packaged with a single command:
 gradle :client:distZip
 ```
 
-This will create the file `client/build/distributions/WorkflowFM_Composer-{VERSION}.zip`.
+This will create the file `client/build/distributions/WorkflowFM_Composer-@@.zip`.
 
-Unzip it to your favourite location to obtained a client installation.
+Unzip it to your favourite location to obtain a client installation.

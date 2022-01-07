@@ -1,7 +1,7 @@
 ---
 title: "Deploy"
 author: ["Petros Papapanagiotou"]
-lastmod: 2022-01-06T09:15:12+00:00
+lastmod: 2022-01-07T12:07:08+00:00
 type: "docs"
 draft: false
 weight: 350
@@ -72,7 +72,7 @@ The deployment dialog requires the following configuration options:
 Once all the desired options are in, click on the `Done` button at the bottom of the window to start the deployment.
 
 {{< tip >}}
-Deployment of multiple compositions is not explicitly supported. However, it is safe to deploy more than one composition with the same option. Take must taken to ensure all resource types are instantiated. Uninstantiated types will be detected by the Scala compiler. We have plans to support larger and more complex deployments in future versions.
+Deployment of multiple compositions is not explicitly supported. However, it is safe to deploy more than one composition with the same option. Care must taken to ensure all resource types are instantiated. Uninstantiated types will be detected by the Scala compiler. We have plans to support larger and more complex deployments in future versions.
 {{< /tip >}}
 
 

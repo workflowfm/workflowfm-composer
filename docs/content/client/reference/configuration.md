@@ -1,7 +1,7 @@
 ---
 title: "Configuration"
 author: ["Petros Papapanagiotou"]
-lastmod: 2022-01-06T19:51:36+00:00
+lastmod: 2022-01-07T12:07:12+00:00
 type: "docs"
 draft: false
 weight: 490
@@ -18,7 +18,7 @@ Some values may be changed through the use of the interface and will be overwrit
 
 | Parameter name            | Type                   | Description                                                                                          | Default                  | Auto                                             |
 |---------------------------|------------------------|------------------------------------------------------------------------------------------------------|--------------------------|--------------------------------------------------|
-| `processNodeWidth`        | Integer                | The pixel width of the process vertex.                                                               | 120                      | \*                                               |
+| `processNodeWidth` \*     | Integer                | The pixel width of the process vertex.                                                               | 120                      |                                                  |
 | `processNodeHeight`       | Integer                | The pixel height of the process vertex.                                                              | 40                       |                                                  |
 | `processNodeAutoResize`   | Boolean                | If `true` the width of process vertices is resized to fit their label.                               | true                     |                                                  |
 | `processCopierNodeRadius` | Integer                | The pixel radius of the copier node vertex.                                                          | 15                       |                                                  |
@@ -28,7 +28,7 @@ Some values may be changed through the use of the interface and will be overwrit
 | `compositeProcessColour`  | String (hex colour)    | The colour of a composite process vertex.                                                            | #64B5F6                  |                                                  |
 | `portEdgeColour`          | String (hex colour)    | The colour of a resource vertex.                                                                     | `atomicProcessColour`    |                                                  |
 | `edgeColour`              | String (hex colour)    | The colour of a solid edge.                                                                          | #686868                  |                                                  |
-| `bufferColour`            | String (hex colour)    | The colour of a buffer edge\*\*.                                                                     | #686868                  |                                                  |
+| `bufferColour` \*\*       | String (hex colour)    | The colour of a buffer edge.                                                                         | #686868                  |                                                  |
 | `hoverHighlightColour`    | String (hex colour)    | The colour used to highlight matching resource vertices when hovering above one.                     | #F78400                  |                                                  |
 | `selectHighlightColour`   | String (hex colour)    | The colour used to highlight selected vertices.                                                      | #33691E                  |                                                  |
 | `proofScriptDirectory`    | String (directory)     | The default directory for opening files.                                                             | `./proofs/`              | {{< icon "checkmark.png" "a green checkmark" >}} |

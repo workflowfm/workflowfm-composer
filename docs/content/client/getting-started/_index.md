@@ -1,7 +1,7 @@
 ---
 title: "Getting Started"
 author: ["Petros Papapanagiotou"]
-lastmod: 2022-01-05T20:46:54+00:00
+lastmod: 2022-01-07T12:07:03+00:00
 type: "docs"
 draft: false
 weight: 101

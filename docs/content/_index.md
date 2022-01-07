@@ -15,10 +15,6 @@ A diagrammatic tool for formally verified process modelling and composition.
 
 ## About
 
-{{< tip warning >}}
-*Docs are under construction...*
-{{< /tip >}}
-
 The WorkflowFM Composer consists of a Java-based server and GUI for formally verified process composition using the [WorkflowFM Reasoner](http://docs.workflowfm.com/workflowfm-reasoner/). It provides a visual, diagrammatic interface to specify processes based on their input and output resources, and compose them together to form more complex workflows. 
 
 Actions in the GUI of the [Client](client/) are sent to the [Server](server/), which in turn is able to interact directly with the [Reasoner](http://docs.workflowfm.com/workflowfm-reasoner/). The Reasoner then performs the necessary logic-based inference within the rigorous environment of the HOL Light theorem prover. 

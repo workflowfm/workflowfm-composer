@@ -1,7 +1,7 @@
 ---
 title: "Create & Edit"
 author: ["Petros Papapanagiotou"]
-lastmod: 2022-01-05T20:46:56+00:00
+lastmod: 2022-01-07T12:07:07+00:00
 type: "docs"
 draft: false
 weight: 320
@@ -61,6 +61,10 @@ It is standard practice in process modelling to name resources **using nouns** t
 Both input and output resources can be added as branches in a tree-like structure. A dialog to fill in the name of the newly added resource is provided each time.
 
 We can specify branches of both parallel (solid lines) and optional (dashed lines) resources.
+
+{{< tip >}}
+Optional resources are exclusively so, meaning that only one of the optional branches will be provided at runtime.
+{{< /tip >}}
 
 -   **Double-clicking** on a blue resource circle adds a new resource **at the same level and branch type as the circle**.
 
